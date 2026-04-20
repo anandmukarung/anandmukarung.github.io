@@ -41,65 +41,74 @@ const { useState, useEffect } = React;
 
 const DATA = {
   name: "Anand Rai",
-  role: "ML & Data Engineer",
-  tagline: "MS Computer Engineering @ Pitt. I build AI models, data pipelines, and automation that turn messy data into decisions.",
+  role: "Software Engineer",
+  tagline: "MS Computer Engineering @ Pitt. Building production backend systems, APIs, and AI-powered applications.",
   location: "Pittsburgh, PA",
   email: "anandmukarung@gmail.com",
   github: "github.com/anandmukarung",
-  linkedin: "linkedin.com/in/anand-rai-130848183",
-  resume: "#",
+  linkedin: "linkedin.com/in/anandmukarung",
+  resume: "Anand_Rai_Resume.pdf",
 
   now: [
     { label: "Reading", value: "Designing ML Systems — Chip Huyen" },
     { label: "Building", value: "A retrieval eval harness for a class project" },
     { label: "Listening", value: "Latent Space podcast" },
-    { label: "Open to", value: "Summer '26 ML/Data internships" },
+    { label: "Open to", value: "Summer '27 software engineering roles" },
   ],
 
   about: [
-    "I'm a second-year Master's student in Computer Engineering at the University of Pittsburgh, focused on applied machine learning and the plumbing that makes it reliable — data pipelines, evaluation, and automation.",
-    "Before grad school I spent two years at a mid-size analytics firm writing Python and SQL for a living: pulling from half a dozen warehouses, cleaning what nobody wanted to touch, and shipping models that marketing and ops actually used.",
-    "I like the full experimentation cycle — collection, preprocessing, modeling, evaluation, documentation — and I care about writing it all down so the next person (often future me) doesn't have to reverse-engineer anything.",
+    "I'm a Master's student in Computer Engineering at the University of Pittsburgh, with professional experience building production-grade backend systems, APIs, and full-stack applications in Python, TypeScript, and Java on AWS.",
+    "I have hands-on experience with machine learning, LLM integration, and AI-powered application development, focusing on the full software development lifecycle from design to deployment.",
+    "I'm a strong communicator and collaborative team member with a track record of delivering high-quality software, technical documentation, and working in Agile environments.",
   ],
 
   skills: {
-    "Languages":     ["Python", "SQL", "TypeScript", "C++", "Bash"],
-    "ML & Data":     ["PyTorch", "scikit-learn", "pandas", "XGBoost", "Hugging Face", "MLflow"],
-    "Pipelines":     ["Airflow", "dbt", "Prefect", "Spark", "Kafka"],
-    "Infra & Cloud": ["AWS (S3, Lambda, SageMaker)", "GCP BigQuery", "Docker", "Postgres", "Snowflake"],
-    "Practices":     ["Experiment design", "A/B testing", "Model eval", "Technical writing"],
+    "Languages":     ["Python", "TypeScript", "JavaScript", "Java", "SQL", "HTML/CSS", "Bash"],
+    "Frameworks":    ["React", "Next.js", "FastAPI", "Spring Boot", "Node.js", "REST APIs"],
+    "AI & ML":       ["PyTorch", "scikit-learn", "OpenAI API", "LLM integration", "Prompt engineering", "Knowledge distillation"],
+    "Cloud & DevOps": ["AWS (Lambda, API Gateway, S3, DynamoDB, EKS)", "Docker", "Kubernetes", "GitHub Actions", "CI/CD", "Datadog"],
+    "Databases":     ["PostgreSQL", "DynamoDB", "SQLite"],
+    "Practices":     ["Agile/Scrum", "TDD", "Code review", "Technical documentation", "OOP", "SDLC"],
   },
 
   experience: [
     {
-      role: "Graduate Research Assistant",
-      org: "Pitt Learning Research & Development Center",
-      when: "Jan 2025 — Present",
-      where: "Pittsburgh, PA",
+      role: "Software Engineer",
+      org: "DTN",
+      when: "Jan 2023 — Jul 2024",
+      where: "Burnsville, MN (Remote)",
       bullets: [
-        "Building a RAG evaluation harness comparing 6 retrievers across 3 domains; authored the protocol now used by two other students.",
-        "Instrumented the lab's shared notebook environment with MLflow so experiments stop getting lost in Slack threads.",
+        "Designed, built, and maintained production backend APIs in Python and TypeScript on AWS (Lambda, API Gateway, S3) with Kubernetes (EKS); collaborated with cross-functional teams to deliver features in Agile sprints.",
+        "Designed and maintained PostgreSQL schemas; wrote and optimized complex SQL queries reducing API latency by 50%; maintained technical documentation for APIs and data services.",
+        "Deployed and monitored distributed services using Datadog; debugged and resolved production issues across the stack; contributed to CI/CD pipelines via GitHub Actions.",
       ],
     },
     {
-      role: "Data Analyst II",
-      org: "Brightside Analytics",
-      when: "Aug 2022 — Jul 2024",
-      where: "Bengaluru, IN",
+      role: "Software Engineering Intern",
+      org: "Amazon",
+      when: "Aug 2022 — Nov 2022",
+      where: "Seattle, WA",
       bullets: [
-        "Owned the marketing attribution pipeline: 40+ Airflow DAGs touching 12 sources; cut daily failures from ~5 to <1.",
-        "Shipped an XGBoost churn model (AUC 0.84) that replaced a rules engine; reduced false-positive win-back offers by 31%.",
-        "Wrote the onboarding doc the team still uses — 'how this warehouse actually works'.",
+        "Collaborated with senior engineers to design and ship a production TypeScript API on AWS (Lambda, API Gateway, DynamoDB, AppSync, Elasticsearch) supporting a large-scale Prime platform.",
+        "Participated in architecture discussions and code reviews; wrote technical documentation and applied TDD throughout the project lifecycle.",
       ],
     },
     {
-      role: "Data Engineering Intern",
-      org: "Kalpataru Power",
-      when: "May 2021 — Jul 2022",
+      role: "Software Engineering Intern",
+      org: "Public Consulting Group",
+      when: "Jun 2022 — Aug 2022",
       where: "Remote",
       bullets: [
-        "Built the first automated reporting layer for the field ops team; replaced a weekly Excel ritual with a Power BI dashboard.",
-        "Wrote SQL for a production forecasting model used to plan crew deployments.",
+        "Designed and built a full-stack staff management application using Spring Boot (Java) and PostgreSQL; partnered with stakeholders to define requirements and delivered complete technical documentation.",
+      ],
+    },
+    {
+      role: "Data Quality Associate",
+      org: "California Energy Commission",
+      when: "Oct 2019 — Jun 2021",
+      where: "Sacramento, CA",
+      bullets: [
+        "Built Python data pipelines to automate preprocessing and validation, improving productivity by 50%; documented workflows and communicated findings to technical and non-technical stakeholders.",
       ],
     },
   ],
@@ -107,63 +116,48 @@ const DATA = {
   projects: [
     {
       n: "01",
-      title: "Loom",
-      kicker: "Retrieval eval harness",
-      year: "2026",
-      stack: ["Python", "PyTorch", "FAISS", "DuckDB", "Streamlit"],
-      blurb: "An opinionated harness for comparing retrievers on your own corpus, with traceable runs and shareable reports.",
-      long: "Loom exists because I kept re-writing the same 'which retriever is actually better on our docs?' scripts. It wraps BM25, bi-encoders, ColBERT, and hybrid scorers behind one eval interface, logs every run to MLflow, and produces a static HTML report you can share with a PI. Currently used by two other labs at Pitt; next milestone is a cost-aware sweep.",
+      title: "Job Application Tracker",
+      kicker: "Full-stack app with LLM integration",
+      year: "2024",
+      stack: ["Python", "FastAPI", "Next.js", "React", "PostgreSQL", "OpenAI API"],
+      blurb: "A full-stack application for tracking job applications with an LLM-based classification pipeline.",
+      long: "Independently designed and built a complete application with a FastAPI backend, PostgreSQL database, and React frontend. Integrated an LLM-based classification pipeline using the OpenAI API, improving accuracy from 71% to 87% through iterative prompt engineering and evaluation. Includes unit and integration tests, deployed via GitHub Actions CI/CD.",
       wins: [
-        "6 retrievers, 3 domains, one config file",
-        "Reports diff runs so regressions are obvious",
-        "Used by 2 other research groups",
+        "Full-stack application with modern tech stack",
+        "LLM accuracy improved from 71% to 87%",
+        "Complete with tests and CI/CD deployment",
       ],
-      link: "github.com/anandmukarung/loom",
+      link: "github.com/anandmukarung/job-application-tracker",
     },
     {
       n: "02",
-      title: "Drift",
-      kicker: "Churn model, productionized",
+      title: "Efficient Distillation of Compact ECG Classifiers",
+      kicker: "Knowledge distillation for ECG models",
       year: "2024",
-      stack: ["Python", "XGBoost", "Airflow", "Snowflake", "FastAPI"],
-      blurb: "A boring-by-design churn pipeline that replaced a 600-line rules engine nobody understood anymore.",
-      long: "The previous system was a SQL rules engine that had accumulated six years of exceptions. Drift is a weekly-retrained XGBoost model with a feature store, shadow-deployed for 8 weeks before cutover. AUC 0.84, 31% fewer false positives on win-back offers, and — more importantly — a single owner and a runbook. This is the project I point at when people ask 'what do you actually do?'.",
+      stack: ["PyTorch", "ResNet1D", "PTB-XL"],
+      blurb: "Applying knowledge distillation to compress large ECG classifiers into compact models.",
+      long: "Working on compressing a large ECG classifier into a compact student model using knowledge distillation. Benchmarking performance across F1, AUROC, latency, and model size with various ablation configurations.",
       wins: [
-        "AUC 0.84 vs. 0.71 baseline",
-        "Shadow-deployed 8 weeks before cutover",
-        "Runbook + on-call rotation, not a notebook",
+        "Knowledge distillation applied to medical ML",
+        "Comprehensive benchmarking across metrics",
+        "Focus on model efficiency",
       ],
-      link: "case study available on request",
+      link: "github.com/anandmukarung/ecg-distillation",
     },
     {
       n: "03",
-      title: "Fieldnotes",
-      kicker: "Ops automation for field crews",
-      year: "2022",
-      stack: ["Python", "Power BI", "SQL Server", "Azure Functions"],
-      blurb: "Replaced a weekly 4-hour Excel ritual with a dashboard field managers check on their phones.",
-      long: "My internship project. Five regional managers were each spending half a day every Monday stitching together crew reports in Excel. I wrote ingestion jobs for the three source systems, normalized the crew-hour schema (nobody agreed on what a 'shift' meant), and shipped a Power BI dashboard. Later found out it was still in use two years after I left, which is the best review a project can get.",
+      title: "Sports Match Outcome Prediction",
+      kicker: "ML pipeline for sports prediction",
+      year: "2023",
+      stack: ["Python", "scikit-learn"],
+      blurb: "End-to-end ML classification pipeline for predicting sports match outcomes.",
+      long: "Built a complete ML pipeline on real sports data, including feature engineering, model comparison (Logistic Regression, LDA, SVM), temporal cross-validation, and documented analysis of results.",
       wins: [
-        "Killed a 20-hour/week manual process",
-        "First time the ops team had same-day visibility",
-        "Still running 4 years later",
+        "End-to-end ML pipeline",
+        "Multiple model comparison",
+        "Temporal cross-validation",
       ],
-      link: "internal — writeup on request",
-    },
-    {
-      n: "04",
-      title: "Marginalia",
-      kicker: "LLM-assisted reading notes",
-      year: "2025",
-      stack: ["TypeScript", "Next.js", "Postgres", "pgvector", "Claude API"],
-      blurb: "A reading app that quotes you back to yourself — surfaces old highlights when you're reading something adjacent.",
-      long: "A weekend project that got out of hand. Marginalia ingests epubs and articles, embeds passages, and when you highlight something new it pulls up the 3 most-related highlights from your past reading. The novelty is in the ranking — it penalizes same-book matches so you get actual cross-pollination. About 900 lines of TS and one very happy embedding model.",
-      wins: [
-        "Cross-book recall > same-book (by design)",
-        "Runs locally except for the LLM call",
-        "Made me actually finish 'The Making of a Manager'",
-      ],
-      link: "github.com/anandmukarung/marginalia",
+      link: "github.com/anandmukarung/sports-prediction",
     },
   ],
 
@@ -394,21 +388,21 @@ function App() {
         <header style={s.hero}>
           <div style={s.heroKicker}>
             <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: 'var(--lime)' }} />
-            Portfolio / v2026 — open to Summer '26
+            Portfolio / v2026 — open to Summer '27
           </div>
           <h1 style={s.heroName}>ANAND</h1>
           <h1 style={s.heroRole}>RAI/</h1>
           <div style={s.heroSplit}>
             <p style={s.heroTag}>
-              ML &amp; data engineer. I build <span style={s.heroTagHL}>AI models</span>, data pipelines,
-              and automation that turn messy data into decisions.
+              Software engineer. I build <span style={s.heroTagHL}>production systems</span>, APIs,
+              and AI-powered applications.
             </p>
             <div style={s.statusCard}>
               <div style={s.statusRow}><span>loc</span><span style={s.statusVal}>Pittsburgh, PA</span></div>
               <div style={s.statusRow}><span>edu</span><span style={s.statusVal}>MS CompE @ Pitt</span></div>
-              <div style={s.statusRow}><span>grad</span><span style={s.statusVal}>May 2026</span></div>
-              <div style={s.statusRow}><span>exp</span><span style={s.statusVal}>3.5 yrs applied ML/data</span></div>
-              <div style={s.statusRow}><span>status</span><span style={{ ...s.statusVal, color: 'var(--lime)' }}>● interviewing</span></div>
+              <div style={s.statusRow}><span>grad</span><span style={s.statusVal}>Spring 2027</span></div>
+              <div style={s.statusRow}><span>exp</span><span style={s.statusVal}>4+ yrs software engineering</span></div>
+              <div style={s.statusRow}><span>status</span><span style={{ ...s.statusVal, color: 'var(--lime)' }}>● open to opportunities</span></div>
             </div>
           </div>
         </header>
