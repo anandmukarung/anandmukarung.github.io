@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Anand Rai — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<style>
+  html, body { margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+  ::selection { background: oklch(0.89 0.22 130); color: #000; }
+
+  body {
+    --bg: oklch(0.17 0.015 260);
+    --bg-2: oklch(0.22 0.02 260);
+    --ink: oklch(0.95 0.015 85);
+    --ink-soft: oklch(0.72 0.02 85);
+    --line: oklch(0.32 0.02 260);
+    --lime: oklch(0.89 0.22 130);
+    --magenta: oklch(0.68 0.24 350);
+    --blue: oklch(0.72 0.18 240);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  @keyframes slideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { animation: slideIn .35s ease-out both; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const DATA = {
+  name: "Anand Rai",
+  role: "Software Engineer",
+  tagline: "MS Computer Engineering @ Pitt. Building production software, tested APIs, and AI-powered applications.",
+  location: "Pittsburgh, PA",
+  email: "anandmukarung@gmail.com",
+  github: "github.com/anandmukarung",
+  linkedin: "linkedin.com/in/anandmukarung",
+  resume: "Anand_Rai_Resume.pdf",
+
+  now: [
+    { label: "Reading", value: "Designing Data-Intensive Applications" },
+    { label: "Building", value: "Production-ready dashboards and API-backed apps" },
+    { label: "Focus", value: "Clean systems, testing, and maintainable handoff" },
+    { label: "Open to", value: "Software engineering opportunities" },
+  ],
+
+  about: [
+    "I'm a Master's student in Computer Engineering at the University of Pittsburgh with production experience building full-stack applications, reusable API components, and backend services in TypeScript, Python, and Java.",
+    "My work spans testing, debugging, documentation, and shipping software on AWS, with recent projects that add LLM workflows and data products without losing sight of maintainability.",
+    "I care about clean code, strong handoff, and building systems teams can actually extend, review, and trust in production.",
+  ],
+
+  skills: {
+    "Languages":     ["Python", "TypeScript", "JavaScript", "Java", "SQL", "HTML/CSS", "Bash"],
+    "Frameworks":    ["React", "Next.js", "FastAPI", "Spring Boot", "Node.js", "REST APIs"],
+    "AI & ML":       ["OpenAI API", "LLM integration", "Prompt engineering", "PyTorch", "scikit-learn", "Knowledge distillation"],
+    "Cloud & DevOps": ["AWS (Lambda, API Gateway, S3, DynamoDB)", "Docker", "GitHub Actions", "CI/CD", "Datadog", "Locust"],
+    "Databases":     ["PostgreSQL", "DynamoDB", "SQLite", "SQL"],
+    "Practices":     ["TDD", "Unit testing", "Integration testing", "Load testing", "Code review", "Technical documentation"],
+  },
+
+  experience: [
+    {
+      role: "Software Engineer",
+      org: "DTN",
+      when: "Jan 2023 — Jul 2024",
+      where: "Burnsville, MN (Remote)",
+      bullets: [
+        "Built and maintained reusable API components and backend services in TypeScript and Python; documented behavior and usage clearly for internal teams.",
+        "Wrote and ran load tests with Locust, then debugged bottlenecks and regressions to reduce latency by 50% through systematic optimization.",
+        "Improved existing codebases for consistency and maintainability while collaborating across engineering and product teams in code review and documentation workflows.",
+      ],
+    },
+    {
+      role: "Software Engineering Intern",
+      org: "Amazon",
+      when: "Aug 2022 — Nov 2022",
+      where: "Seattle, WA",
+      bullets: [
+        "Developed a production-ready TypeScript API on AWS using Lambda, API Gateway, and DynamoDB, with unit tests written in a TDD workflow.",
+        "Ramped quickly on a large codebase, contributed to architecture reviews, and shipped a complete tested feature within a 10-week internship.",
+      ],
+    },
+    {
+      role: "Software Engineering Intern",
+      org: "Public Consulting Group",
+      when: "Jun 2022 — Aug 2022",
+      where: "Remote",
+      bullets: [
+        "Built a full-stack staff management application using Java Spring Boot and PostgreSQL, then partnered with QA to validate features before release.",
+        "Documented system behavior and technical processes to support smoother handoff and long-term maintainability.",
+      ],
+    },
+    {
+      role: "Graduate Student Assistant",
+      org: "CSU Sacramento",
+      when: "Jan 2022 — Jun 2022",
+      where: "Sacramento, CA",
+      bullets: [
+        "Evaluated 40+ student programming submissions against consistent criteria and provided structured, actionable feedback on code quality and design.",
+      ],
+    },
+  ],
+
+  projects: [
+    {
+      n: "01",
+      title: "Job Application Tracker",
+      kicker: "Full-stack app with LLM-assisted workflow",
+      year: "2024 — Present",
+      stack: ["Next.js", "React", "FastAPI", "PostgreSQL", "OpenAI API"],
+      blurb: "A full-stack application for tracking job applications with a tested, component-based frontend and an LLM-assisted backend workflow.",
+      long: "Built a full-stack web application with a reusable React frontend, FastAPI backend, and PostgreSQL database. Iterated on an LLM-based classification pipeline over a labeled email dataset, improving accuracy from 71% to 87%, and shipped the project with automated tests plus GitHub Actions CI/CD.",
+      wins: [
+        "Reusable component-based frontend and API backend",
+        "LLM classification accuracy improved from 71% to 87%",
+        "Automated tests and CI/CD deployment in place",
+      ],
+      repo: "github.com/anandmukarung/job-application-tracker",
+    },
+    {
+      n: "02",
+      title: "Economy Dashboard",
+      kicker: "Live macro releases dashboard",
+      year: "2025",
+      stack: ["Next.js", "React", "Vercel", "Data visualization"],
+      blurb: "A live dashboard for the releases that move the macro narrative: labor, inflation, activity, growth, and recession risk.",
+      long: "Built and deployed a live macro dashboard that organizes the economic releases most relevant to the market narrative into one readable product. The project pairs a clean front end with fast iteration and public hosting on Vercel, making it easy to scan labor, inflation, growth, activity, and recession-risk signals in one place.",
+      wins: [
+        "Live production deployment on Vercel",
+        "Clear macro-focused information architecture",
+        "Public repo and live product for ongoing iteration",
+      ],
+      live: "economy-dashboard-lake.vercel.app",
+      repo: "github.com/anandmukarung/Economy-Dashboard",
+    },
+    {
+      n: "03",
+      title: "Efficient Distillation of Compact ECG Classifiers",
+      kicker: "Knowledge distillation for ECG models",
+      year: "2024",
+      stack: ["PyTorch", "ResNet1D", "PTB-XL"],
+      blurb: "Applying knowledge distillation to compress large ECG classifiers into compact models.",
+      long: "Working on compressing a large ECG classifier into a compact student model using knowledge distillation. Benchmarking performance across F1, AUROC, latency, and model size with various ablation configurations.",
+      wins: [
+        "Knowledge distillation applied to medical ML",
+        "Comprehensive benchmarking across metrics",
+        "Focus on model efficiency",
+      ],
+      repo: "github.com/anandmukarung/ecg-distillation",
+    },
+    {
+      n: "04",
+      title: "Neuromorphic Vision-Driven Gait Switching",
+      kicker: "Real-time vision classification pipeline",
+      year: "2024",
+      stack: ["Python", "SpikingJelly", "Computer Vision"],
+      blurb: "A real-time terrain classification pipeline that triggers robot behavior from live scene understanding.",
+      long: "Collected and labeled a terrain dataset from webcam recordings, then built and tested an SNN-based automation pipeline that classifies scenes and triggers robot gait behavior in real time. The work focused on data collection, integration testing, and debugging classification failures end-to-end.",
+      wins: [
+        "Real-time classification pipeline",
+        "Dataset collection and debugging owned end-to-end",
+        "Integrated model output into downstream automation behavior",
+      ],
+      repo: "github.com/anandmukarung",
+    },
+  ],
+
+  archive: [
+    { year: "2025", title: "pg-snapshot", note: "Tiny CLI for diffing Postgres schemas across envs.", stack: "Go" },
+    { year: "2024", title: "warehouse-lint", note: "Opinionated linter for dbt models — catches silent joins.", stack: "Python" },
+  ],
+
+  oss: [
+    { repo: "github.com/anandmukarung/loom", what: "Retrieval eval harness for comparing retrievers on your own corpus." },
+    { repo: "github.com/anandmukarung/marginalia", what: "LLM-assisted reading app that surfaces old highlights when reading something adjacent." },
+  ],
+
+  principles: [
+    {
+      n: "01",
+      title: "Clean systems > clever demos.",
+      body: "The feature only matters if someone can test it, extend it, and understand it six months later. I optimize for handoff and longevity.",
+    },
+    {
+      n: "02",
+      title: "Test your assumptions.",
+      body: "Load tests, integration tests, and real feedback from users beat speculation. Ship with confidence through systematic validation.",
+    },
+    {
+      n: "03",
+      title: "Document as you go.",
+      body: "Runbooks, architecture diagrams, and decision logs save future-me and my teammates hours of reverse-engineering.",
+    },
+  ],
+};
+
+function Placeholder({ label, ratio = '16/10', tone = 'light' }) {
+  const bg = tone === 'dark' ? 'oklch(0.28 0.02 260)' : 'oklch(0.92 0.02 80)';
+  const fg = tone === 'dark' ? 'oklch(0.7 0.02 85)' : 'oklch(0.48 0.02 60)';
+  const stripe = tone === 'dark' ? 'oklch(0.32 0.02 260)' : 'oklch(0.88 0.02 80)';
+  return (
+    <div style={{
+      aspectRatio: ratio,
+      background: `repeating-linear-gradient(135deg, ${bg} 0 10px, ${stripe} 10px 11px)`,
+      borderRadius: 6,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      color: fg, fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: 0.5,
+    }}>
+      {label}
+    </div>
+  );
+}
+
+function App() {
+  const D = DATA;
+  const [openProject, setOpenProject] = useState(0);
+  const [hoverProj, setHoverProj] = useState(null);
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setTick(t => t + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const time = new Date().toLocaleTimeString('en-US', { hour12: false, timeZone: 'America/New_York' });
+
+  const s = {
+    wrap: { maxWidth: 1280, margin: '0 auto', padding: '28px 40px 120px' },
+
+    topbar: {
+      display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center',
+      padding: '14px 20px', border: '1px solid var(--line)', borderRadius: 14,
+      background: 'var(--bg-2)', fontFamily: 'JetBrains Mono, monospace', fontSize: 12,
+      color: 'var(--ink-soft)', marginBottom: 48,
+    },
+    topDot: { display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: 'var(--lime)', marginRight: 8, boxShadow: '0 0 12px var(--lime)' },
+    logo: { fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 16, color: 'var(--ink)', letterSpacing: '-0.02em' },
+    navLinks: { display: 'flex', gap: 18, justifyContent: 'center' },
+    navLink: { color: 'var(--ink-soft)', textDecoration: 'none', cursor: 'pointer' },
+
+    hero: { position: 'relative', padding: '48px 0 32px' },
+    heroKicker: {
+      fontFamily: 'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.2em',
+      textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 24,
+      display: 'flex', alignItems: 'center', gap: 12,
+    },
+    heroName: {
+      fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(88px, 14vw, 220px)',
+      lineHeight: 0.85, letterSpacing: '-0.055em', margin: 0, color: 'var(--ink)',
+    },
+    heroRole: {
+      fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(88px, 14vw, 220px)',
+      lineHeight: 0.85, letterSpacing: '-0.055em', margin: 0,
+      WebkitTextStroke: '1.5px var(--ink)', color: 'transparent',
+    },
+    heroSplit: {
+      display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 48, alignItems: 'end', marginTop: 40,
+    },
+    heroTag: { fontSize: 20, lineHeight: 1.4, maxWidth: 560, color: 'var(--ink)' },
+    heroTagHL: { background: 'var(--lime)', color: '#000', padding: '0 6px', borderRadius: 3 },
+    statusCard: {
+      background: 'var(--bg-2)', border: '1px solid var(--line)', borderRadius: 14,
+      padding: '20px 22px', fontFamily: 'JetBrains Mono, monospace', fontSize: 12,
+    },
+    statusRow: { display: 'flex', justifyContent: 'space-between', padding: '6px 0', color: 'var(--ink-soft)' },
+    statusVal: { color: 'var(--ink)' },
+
+    sectionHead: {
+      display: 'flex', alignItems: 'baseline', justifyContent: 'space-between',
+      padding: '20px 0', borderBottom: '1px solid var(--line)', marginBottom: 32,
+    },
+    sTag: {
+      fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
+      color: 'var(--lime)', background: 'oklch(0.22 0.08 130 / 0.25)', padding: '4px 10px', borderRadius: 4,
+    },
+    sTitle: {
+      fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(44px, 6vw, 80px)',
+      lineHeight: 0.95, letterSpacing: '-0.035em', margin: '12px 0 0',
+    },
+    sCount: { fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--ink-soft)' },
+    section: { padding: '80px 0 20px' },
+
+    aboutGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 },
+    aboutText: { fontSize: 18, lineHeight: 1.6, color: 'var(--ink)' },
+    aboutTextP: { margin: '0 0 18px' },
+    aboutSide: {
+      background: 'var(--magenta)', color: '#000', padding: '32px 36px', borderRadius: 16,
+      transform: 'rotate(-1deg)', boxShadow: '8px 8px 0 var(--bg-2)',
+    },
+    aboutSideLabel: { fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 14 },
+    aboutSideBig: { fontFamily: 'Space Grotesk', fontSize: 42, fontWeight: 700, lineHeight: 1.05, letterSpacing: '-0.03em' },
+
+    nowStrip: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 },
+    nowCard: {
+      padding: '24px', borderRadius: 14, border: '1px solid var(--line)',
+      background: 'var(--bg-2)', position: 'relative', overflow: 'hidden', minHeight: 140,
+    },
+    nowLabel: { fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 10 },
+    nowValue: { fontFamily: 'Space Grotesk', fontWeight: 600, fontSize: 20, lineHeight: 1.25, color: 'var(--ink)' },
+
+    projectItem: { borderTop: '1px solid var(--line)', transition: 'background .2s' },
+    projectHead: {
+      display: 'grid', gridTemplateColumns: '90px 1fr auto 40px', gap: 24, alignItems: 'center',
+      padding: '28px 12px', cursor: 'pointer',
+    },
+    projectN: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--ink-soft)' },
+    projectTitle: { fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 68px)', lineHeight: 1, letterSpacing: '-0.03em' },
+    projectKicker: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--ink-soft)', marginTop: 6 },
+    projectTags: { display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: 260 },
+    tag: {
+      fontFamily: 'JetBrains Mono, monospace', fontSize: 11, padding: '4px 8px',
+      border: '1px solid var(--line)', borderRadius: 4, color: 'var(--ink-soft)',
+    },
+    plus: {
+      width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--line)',
+      display: 'grid', placeItems: 'center', fontFamily: 'JetBrains Mono, monospace',
+      fontSize: 18, transition: 'all .25s',
+    },
+
+    projectBody: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, padding: '0 12px 40px 102px' },
+    projectBodyLeft: { background: 'var(--bg-2)', borderRadius: 14, padding: 20 },
+    projectBlurb: { fontFamily: 'Space Grotesk', fontSize: 26, lineHeight: 1.25, letterSpacing: '-0.01em', marginBottom: 20 },
+    projectLong: { fontSize: 15, lineHeight: 1.65, color: 'var(--ink-soft)', marginBottom: 24 },
+    winList: { listStyle: 'none', padding: 0, margin: 0 },
+    winItem: { display: 'flex', gap: 12, padding: '10px 0', borderTop: '1px solid var(--line)', fontSize: 14.5, lineHeight: 1.4 },
+    winArrow: { color: 'var(--lime)', fontFamily: 'JetBrains Mono, monospace' },
+
+    expItem: {
+      display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 32,
+      padding: '40px 0', borderTop: '1px solid var(--line)',
+    },
+    expWhen: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--lime)' },
+    expOrgLine: { fontFamily: 'Space Grotesk', fontSize: 34, fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 4 },
+    expRole: { fontFamily: 'Space Grotesk', fontSize: 20, color: 'var(--ink-soft)', marginBottom: 20, fontWeight: 500 },
+    expBullet: { fontSize: 15.5, lineHeight: 1.55, margin: '0 0 12px', paddingLeft: 20, position: 'relative', color: 'var(--ink)' },
+
+    skillsBlock: {
+      display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 2, background: 'var(--line)',
+      border: '1px solid var(--line)', borderRadius: 14, overflow: 'hidden',
+    },
+    skillCell: { background: 'var(--bg)', padding: '24px 22px' },
+    skillHead: { fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--magenta)', marginBottom: 16 },
+    skillItem: { fontFamily: 'Space Grotesk', fontSize: 15, padding: '5px 0', color: 'var(--ink)', fontWeight: 500 },
+
+    archiveTable: { border: '1px solid var(--line)', borderRadius: 14, overflow: 'hidden' },
+    archiveHead: {
+      display: 'grid', gridTemplateColumns: '80px 1fr 2fr 160px', gap: 16,
+      padding: '12px 20px', background: 'var(--bg-2)',
+      fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.2em',
+      textTransform: 'uppercase', color: 'var(--ink-soft)',
+    },
+    archiveRow: {
+      display: 'grid', gridTemplateColumns: '80px 1fr 2fr 160px', gap: 16,
+      padding: '16px 20px', borderTop: '1px solid var(--line)', alignItems: 'baseline',
+    },
+    archiveYear: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--ink-soft)' },
+    archiveTitle: { fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 600, letterSpacing: '-0.01em' },
+    archiveNote: { fontSize: 14, color: 'var(--ink-soft)' },
+    archiveStack: { fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--lime)', textAlign: 'right' },
+
+    ossGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 },
+    ossCard: { padding: '24px', border: '1px solid var(--line)', borderRadius: 14, background: 'var(--bg-2)' },
+    ossRepo: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--blue)', marginBottom: 14 },
+    ossWhat: { fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 500, lineHeight: 1.35, marginBottom: 18 },
+    ossStars: { fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: 'var(--ink-soft)' },
+
+    contactBlock: {
+      marginTop: 80, padding: '64px 48px', borderRadius: 24,
+      background: 'var(--lime)', color: '#000', position: 'relative', overflow: 'hidden',
+    },
+    contactBig: {
+      fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(80px, 12vw, 180px)',
+      lineHeight: 0.85, letterSpacing: '-0.055em', margin: 0,
+    },
+    contactLinks: { display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 40, fontFamily: 'JetBrains Mono, monospace', fontSize: 14 },
+    contactLink: {
+      background: '#000', color: 'var(--lime)', padding: '14px 20px',
+      borderRadius: 999, textDecoration: 'none', fontWeight: 500,
+      display: 'inline-flex', alignItems: 'center', gap: 8,
+    },
+  };
+
+  const nowAccentColors = ['var(--lime)', 'var(--magenta)', 'var(--blue)', 'var(--lime)'];
+
+  return (
+    <div style={{ minHeight: '100vh' }}>
+      <div style={s.wrap}>
+
+        {/* TOPBAR */}
+        <div style={s.topbar}>
+          <div style={s.logo}>anand_rai<span style={{ color: 'var(--lime)' }}>.</span></div>
+          <div style={s.navLinks}>
+            <a style={s.navLink} href="#work">work</a>
+            <a style={s.navLink} href="#about">about</a>
+            <a style={s.navLink} href="#contact">contact</a>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <span style={s.topDot} />PGH · {time} EST
+          </div>
+        </div>
+
+        {/* HERO */}
+        <header style={s.hero}>
+          <div style={s.heroKicker}>
+            <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: 'var(--lime)' }} />
+            Portfolio / v2026 — open to software engineering roles
+          </div>
+          <h1 style={s.heroName}>ANAND</h1>
+          <h1 style={s.heroRole}>RAI/</h1>
+          <div style={s.heroSplit}>
+            <p style={s.heroTag}>
+              Software engineer. I build <span style={s.heroTagHL}>production systems</span>, APIs,
+              and practical AI-powered applications.
+            </p>
+            <div style={s.statusCard}>
+              <div style={s.statusRow}><span>loc</span><span style={s.statusVal}>Pittsburgh, PA</span></div>
+              <div style={s.statusRow}><span>edu</span><span style={s.statusVal}>MS CompE @ Pitt</span></div>
+              <div style={s.statusRow}><span>grad</span><span style={s.statusVal}>Spring 2027</span></div>
+              <div style={s.statusRow}><span>exp</span><span style={s.statusVal}>2+ yrs software engineering</span></div>
+              <div style={s.statusRow}><span>status</span><span style={{ ...s.statusVal, color: 'var(--lime)' }}>● open to opportunities</span></div>
+            </div>
+          </div>
+        </header>
+
+        {/* ABOUT */}
+        <section style={s.section} id="about">
+          <div style={s.sectionHead}>
+            <div>
+              <span style={s.sTag}>01 / ABOUT</span>
+              <h2 style={s.sTitle}>Short version.</h2>
+            </div>
+            <div style={s.sCount}>~ 3 paragraphs</div>
+          </div>
+          <div style={s.aboutGrid}>
+            <div style={s.aboutText}>
+              {D.about.map((p, i) => <p key={i} style={s.aboutTextP}>{p}</p>)}
+            </div>
+            <div style={s.aboutSide}>
+              <div style={s.aboutSideLabel}>Principle #1</div>
+              <div style={s.aboutSideBig}>
+                Clean systems &gt; clever demos.
+              </div>
+              <div style={{ marginTop: 28, fontFamily: 'JetBrains Mono, monospace', fontSize: 12, lineHeight: 1.5 }}>
+                The feature only matters if someone can test it, extend it,
+                and understand it six months later.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* NOW */}
+        <section style={s.section}>
+          <div style={s.sectionHead}>
+            <div>
+              <span style={s.sTag}>02 / NOW</span>
+              <h2 style={s.sTitle}>Current snapshot.</h2>
+            </div>
+            <div style={s.sCount}>April 2026</div>
+          </div>
+          <div style={s.nowStrip}>
+            {D.now.map((n, i) => (
+              <div key={i} style={s.nowCard}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: nowAccentColors[i % 4] }} />
+                <div style={s.nowLabel}>{n.label}</div>
+                <div style={s.nowValue}>{n.value}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* PROJECTS */}
+        <section style={s.section} id="work">
+          <div style={s.sectionHead}>
+            <div>
+              <span style={s.sTag}>03 / SELECTED WORK</span>
+              <h2 style={s.sTitle}>Things I've shipped.</h2>
+            </div>
+            <div style={s.sCount}>{D.projects.length} selected projects</div>
+          </div>
+          <div>
+            {D.projects.map((p, i) => {
+              const open = openProject === i;
+              const hovered = hoverProj === i;
+              return (
+                <div
+                  key={i}
+                  style={{ ...s.projectItem, background: hovered && !open ? 'var(--bg-2)' : 'transparent' }}
+                  onMouseEnter={() => setHoverProj(i)}
+                  onMouseLeave={() => setHoverProj(null)}
+                >
+                  <div style={s.projectHead} onClick={() => setOpenProject(open ? -1 : i)}>
+                    <div style={s.projectN}>→ PRJ_{p.n}</div>
+                    <div>
+                      <div style={{ ...s.projectTitle, color: hovered || open ? 'var(--lime)' : 'var(--ink)', transition: 'color .2s' }}>
+                        {p.title}
+                      </div>
+                      <div style={s.projectKicker}>// {p.kicker} · {p.year}</div>
+                    </div>
+                    <div style={s.projectTags}>
+                      {p.stack.slice(0, 3).map(t => <span key={t} style={s.tag}>{t}</span>)}
+                    </div>
+                    <div style={{ ...s.plus, background: open ? 'var(--lime)' : 'transparent', color: open ? '#000' : 'var(--ink)', transform: open ? 'rotate(45deg)' : 'rotate(0)' }}>+</div>
+                  </div>
+                  {open && (
+                    <div style={s.projectBody} className="reveal">
+                      <div style={s.projectBodyLeft}>
+                        <Placeholder label={`[ ${p.title.toLowerCase()} — screens ]`} ratio="4/3" tone="dark" />
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
+                          {p.stack.map(t => <span key={t} style={s.tag}>{t}</span>)}
+                        </div>
+                        <div style={{ marginTop: 16, fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--blue)', display: 'grid', gap: 6 }}>
+                          {p.live && <a href={`https://${p.live}`} style={{ color: 'var(--blue)', textDecoration: 'none' }}>↗ live: {p.live}</a>}
+                          {p.repo && <a href={`https://${p.repo}`} style={{ color: p.live ? 'var(--ink-soft)' : 'var(--blue)', textDecoration: 'none' }}>◆ repo: {p.repo}</a>}
+                        </div>
+                      </div>
+                      <div>
+                        <div style={s.projectBlurb}>{p.blurb}</div>
+                        <div style={s.projectLong}>{p.long}</div>
+                        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 8 }}>
+                          WINS
+                        </div>
+                        <ul style={s.winList}>
+                          {p.wins.map((w, j) => (
+                            <li key={j} style={s.winItem}>
+                              <span style={s.winArrow}>→</span>
+                              <span>{w}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            <div style={{ borderTop: '1px solid var(--line)' }} />
+          </div>
+        </section>
+
+        {/* EXPERIENCE */}
+        <section style={s.section}>
+          <div style={s.sectionHead}>
+            <div>
+              <span style={s.sTag}>04 / EXPERIENCE</span>
+              <h2 style={s.sTitle}>Where I've worked.</h2>
+            </div>
+            <div style={s.sCount}>2+ years</div>
+          </div>
+          <div>
+            {D.experience.map((e, i) => (
+              <div key={i} style={s.expItem}>
+                <div>
+                  <div style={s.expWhen}>{e.when}</div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--ink-soft)', marginTop: 6 }}>{e.where}</div>
+                </div>
+                <div>
+                  <h3 style={s.expOrgLine}>{e.org}</h3>
+                  <div style={s.expRole}>{e.role}</div>
+                  {e.bullets.map((b, j) => (
+                    <p key={j} style={s.expBullet}>
+                      <span style={{ position: 'absolute', left: 0, color: 'var(--magenta)' }}>▸</span>{b}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div style={{ borderTop: '1px solid var(--line)' }} />
+          </div>
+        </section>
+
+        {/* SKILLS */}
+        <section style={s.section}>
+          <div style={s.sectionHead}>
+            <div>
+              <span style={s.sTag}>05 / STACK</span>
+              <h2 style={s.sTitle}>Tools I reach for.</h2>
+            </div>
+            <div style={s.sCount}>daily drivers</div>
+          </div>
+          <div style={s.skillsBlock}>
+            {Object.entries(D.skills).map(([cat, items]) => (
+              <div key={cat} style={s.skillCell}>
+                <div style={s.skillHead}>{cat}</div>
+                {items.map(sk => <div key={sk} style={s.skillItem}>{sk}</div>)}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* CONTACT */}
+        <section style={s.contactBlock} id="contact">
+          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 20 }}>
+            06 / CONTACT — say hi
+          </div>
+          <h2 style={s.contactBig}>let's<br />build something.</h2>
+          <div style={s.contactLinks}>
+            <a href={`mailto:${D.email}`} style={s.contactLink}>✉ {D.email}</a>
+            <a href={`https://${D.github}`} style={s.contactLink}>◆ {D.github}</a>
+            <a href={`https://${D.linkedin}`} style={s.contactLink}>◆ {D.linkedin}</a>
+            <a href={D.resume} style={{ ...s.contactLink, background: '#fff', color: '#000' }}>⤓ resume.pdf</a>
+          </div>
+          <div style={{ marginTop: 48, fontFamily: 'JetBrains Mono, monospace', fontSize: 11, opacity: 0.7 }}>
+            © 2026 Anand Rai · Set in Space Grotesk &amp; JetBrains Mono
+          </div>
+        </section>
+
+      </div>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>

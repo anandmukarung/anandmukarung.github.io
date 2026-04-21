@@ -51,9 +51,8 @@ const DATA = {
 
   now: [
     { label: "Reading", value: "Designing Data-Intensive Applications" },
-    { label: "Building", value: "Production-ready dashboards and API-backed apps" },
-    { label: "Focus", value: "Clean systems, testing, and maintainable handoff" },
-    { label: "Open to", value: "Software engineering opportunities" },
+    { label: "Building", value: "Production systems and clean interfaces" },
+    { label: "Next focus", value: "Distributed backend architecture" },
   ],
 
   about: [
@@ -101,15 +100,6 @@ const DATA = {
       bullets: [
         "Built a full-stack staff management application using Java Spring Boot and PostgreSQL, then partnered with QA to validate features before release.",
         "Documented system behavior and technical processes to support smoother handoff and long-term maintainability.",
-      ],
-    },
-    {
-      role: "Graduate Student Assistant",
-      org: "CSU Sacramento",
-      when: "Jan 2022 — Jun 2022",
-      where: "Sacramento, CA",
-      bullets: [
-        "Evaluated 40+ student programming submissions against consistent criteria and provided structured, actionable feedback on code quality and design.",
       ],
     },
   ],
@@ -161,20 +151,33 @@ const DATA = {
       ],
       repo: "github.com/anandmukarung/ecg-distillation",
     },
+  ],
+
+  archive: [
+    { year: "2025", title: "pg-snapshot", note: "Tiny CLI for diffing Postgres schemas across envs.", stack: "Go" },
+    { year: "2024", title: "warehouse-lint", note: "Opinionated linter for dbt models — catches silent joins.", stack: "Python" },
+  ],
+
+  oss: [
+    { repo: "github.com/anandmukarung/loom", what: "Retrieval eval harness for comparing retrievers on your own corpus." },
+    { repo: "github.com/anandmukarung/marginalia", what: "LLM-assisted reading app that surfaces old highlights when reading something adjacent." },
+  ],
+
+  principles: [
     {
-      n: "04",
-      title: "Neuromorphic Vision-Driven Gait Switching",
-      kicker: "Real-time vision classification pipeline",
-      year: "2024",
-      stack: ["Python", "SpikingJelly", "Computer Vision"],
-      blurb: "A real-time terrain classification pipeline that triggers robot behavior from live scene understanding.",
-      long: "Collected and labeled a terrain dataset from webcam recordings, then built and tested an SNN-based automation pipeline that classifies scenes and triggers robot gait behavior in real time. The work focused on data collection, integration testing, and debugging classification failures end-to-end.",
-      wins: [
-        "Real-time classification pipeline",
-        "Dataset collection and debugging owned end-to-end",
-        "Integrated model output into downstream automation behavior",
-      ],
-      repo: "github.com/anandmukarung",
+      n: "01",
+      title: "Clean systems > clever demos.",
+      body: "The feature only matters if someone can test it, extend it, and understand it six months later. I optimize for handoff and longevity.",
+    },
+    {
+      n: "02",
+      title: "Test your assumptions.",
+      body: "Load tests, integration tests, and real feedback from users beat speculation. Ship with confidence through systematic validation.",
+    },
+    {
+      n: "03",
+      title: "Document as you go.",
+      body: "Runbooks, architecture diagrams, and decision logs save future-me and my teammates hours of reverse-engineering.",
     },
   ],
 };
@@ -196,369 +199,292 @@ function Placeholder({ label, ratio = '16/10', tone = 'light' }) {
   );
 }
 
+function Dot({ size = 8, color = 'var(--lime)' }) {
+  return <span style={{ display: 'inline-block', width: size, height: size, borderRadius: '50%', background: color }} />;
+}
+
 function App() {
   const D = DATA;
-  const [openProject, setOpenProject] = useState(0);
+  const [openProject, setOpenProject] = useState(-1);
   const [hoverProj, setHoverProj] = useState(null);
-  const [tick, setTick] = useState(0);
+  const [principleIdx, setPrincipleIdx] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(() => setTick(t => t + 1), 1000);
+    const id = setInterval(() => {
+      setPrincipleIdx(i => (i + 1) % D.principles.length);
+    }, 5200);
     return () => clearInterval(id);
-  }, []);
+  }, [D.principles.length]);
+
   const time = new Date().toLocaleTimeString('en-US', { hour12: false, timeZone: 'America/New_York' });
 
   const s = {
     wrap: { maxWidth: 1280, margin: '0 auto', padding: '28px 40px 120px' },
-
     topbar: {
       display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center',
       padding: '14px 20px', border: '1px solid var(--line)', borderRadius: 14,
       background: 'var(--bg-2)', fontFamily: 'JetBrains Mono, monospace', fontSize: 12,
-      color: 'var(--ink-soft)', marginBottom: 48,
+      color: 'var(--ink-soft)', marginBottom: 32,
     },
-    topDot: { display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: 'var(--lime)', marginRight: 8, boxShadow: '0 0 12px var(--lime)' },
-    logo: { fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 16, color: 'var(--ink)', letterSpacing: '-0.02em' },
-    navLinks: { display: 'flex', gap: 18, justifyContent: 'center' },
+    topDot: { display:'inline-block', width: 8, height: 8, borderRadius: '50%', background: 'var(--lime)', marginRight: 8, boxShadow: '0 0 12px var(--lime)' },
+    logo: { fontFamily:'Space Grotesk', fontWeight: 700, fontSize: 16, color: 'var(--ink)', letterSpacing: '-0.02em' },
+    navLinks: { display:'flex', gap: 18, justifyContent:'center' },
     navLink: { color: 'var(--ink-soft)', textDecoration: 'none', cursor: 'pointer' },
-
-    hero: { position: 'relative', padding: '48px 0 32px' },
-    heroKicker: {
-      fontFamily: 'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.2em',
-      textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 24,
-      display: 'flex', alignItems: 'center', gap: 12,
-    },
-    heroName: {
-      fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(88px, 14vw, 220px)',
-      lineHeight: 0.85, letterSpacing: '-0.055em', margin: 0, color: 'var(--ink)',
-    },
-    heroRole: {
-      fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(88px, 14vw, 220px)',
-      lineHeight: 0.85, letterSpacing: '-0.055em', margin: 0,
-      WebkitTextStroke: '1.5px var(--ink)', color: 'transparent',
-    },
-    heroSplit: {
-      display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 48, alignItems: 'end', marginTop: 40,
-    },
-    heroTag: { fontSize: 20, lineHeight: 1.4, maxWidth: 560, color: 'var(--ink)' },
-    heroTagHL: { background: 'var(--lime)', color: '#000', padding: '0 6px', borderRadius: 3 },
-    statusCard: {
-      background: 'var(--bg-2)', border: '1px solid var(--line)', borderRadius: 14,
-      padding: '20px 22px', fontFamily: 'JetBrains Mono, monospace', fontSize: 12,
-    },
-    statusRow: { display: 'flex', justifyContent: 'space-between', padding: '6px 0', color: 'var(--ink-soft)' },
-    statusVal: { color: 'var(--ink)' },
-
-    sectionHead: {
-      display: 'flex', alignItems: 'baseline', justifyContent: 'space-between',
-      padding: '20px 0', borderBottom: '1px solid var(--line)', marginBottom: 32,
-    },
-    sTag: {
-      fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
-      color: 'var(--lime)', background: 'oklch(0.22 0.08 130 / 0.25)', padding: '4px 10px', borderRadius: 4,
-    },
-    sTitle: {
-      fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(44px, 6vw, 80px)',
-      lineHeight: 0.95, letterSpacing: '-0.035em', margin: '12px 0 0',
-    },
-    sCount: { fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--ink-soft)' },
-    section: { padding: '80px 0 20px' },
-
-    aboutGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 },
-    aboutText: { fontSize: 18, lineHeight: 1.6, color: 'var(--ink)' },
-    aboutTextP: { margin: '0 0 18px' },
-    aboutSide: {
-      background: 'var(--magenta)', color: '#000', padding: '32px 36px', borderRadius: 16,
-      transform: 'rotate(-1deg)', boxShadow: '8px 8px 0 var(--bg-2)',
-    },
-    aboutSideLabel: { fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 14 },
-    aboutSideBig: { fontFamily: 'Space Grotesk', fontSize: 42, fontWeight: 700, lineHeight: 1.05, letterSpacing: '-0.03em' },
-
-    nowStrip: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 },
-    nowCard: {
-      padding: '24px', borderRadius: 14, border: '1px solid var(--line)',
-      background: 'var(--bg-2)', position: 'relative', overflow: 'hidden', minHeight: 140,
-    },
-    nowLabel: { fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 10 },
-    nowValue: { fontFamily: 'Space Grotesk', fontWeight: 600, fontSize: 20, lineHeight: 1.25, color: 'var(--ink)' },
-
-    projectItem: { borderTop: '1px solid var(--line)', transition: 'background .2s' },
-    projectHead: {
-      display: 'grid', gridTemplateColumns: '90px 1fr auto 40px', gap: 24, alignItems: 'center',
-      padding: '28px 12px', cursor: 'pointer',
-    },
-    projectN: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--ink-soft)' },
-    projectTitle: { fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(36px, 5vw, 68px)', lineHeight: 1, letterSpacing: '-0.03em' },
-    projectKicker: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--ink-soft)', marginTop: 6 },
-    projectTags: { display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: 260 },
-    tag: {
-      fontFamily: 'JetBrains Mono, monospace', fontSize: 11, padding: '4px 8px',
-      border: '1px solid var(--line)', borderRadius: 4, color: 'var(--ink-soft)',
-    },
-    plus: {
-      width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--line)',
-      display: 'grid', placeItems: 'center', fontFamily: 'JetBrains Mono, monospace',
-      fontSize: 18, transition: 'all .25s',
-    },
-
-    projectBody: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, padding: '0 12px 40px 102px' },
-    projectBodyLeft: { background: 'var(--bg-2)', borderRadius: 14, padding: 20 },
-    projectBlurb: { fontFamily: 'Space Grotesk', fontSize: 26, lineHeight: 1.25, letterSpacing: '-0.01em', marginBottom: 20 },
-    projectLong: { fontSize: 15, lineHeight: 1.65, color: 'var(--ink-soft)', marginBottom: 24 },
-    winList: { listStyle: 'none', padding: 0, margin: 0 },
-    winItem: { display: 'flex', gap: 12, padding: '10px 0', borderTop: '1px solid var(--line)', fontSize: 14.5, lineHeight: 1.4 },
-    winArrow: { color: 'var(--lime)', fontFamily: 'JetBrains Mono, monospace' },
-
-    expItem: {
-      display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 32,
-      padding: '40px 0', borderTop: '1px solid var(--line)',
-    },
-    expWhen: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--lime)' },
-    expOrgLine: { fontFamily: 'Space Grotesk', fontSize: 34, fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 4 },
-    expRole: { fontFamily: 'Space Grotesk', fontSize: 20, color: 'var(--ink-soft)', marginBottom: 20, fontWeight: 500 },
-    expBullet: { fontSize: 15.5, lineHeight: 1.55, margin: '0 0 12px', paddingLeft: 20, position: 'relative', color: 'var(--ink)' },
-
-    skillsBlock: {
-      display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 2, background: 'var(--line)',
-      border: '1px solid var(--line)', borderRadius: 14, overflow: 'hidden',
-    },
+    hero: { display: 'grid', gridTemplateColumns: '1fr 360px', gap: 40, padding: '24px 0 8px' },
+    heroLeft: { position: 'relative' },
+    heroKicker: { fontFamily:'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 12 },
+    heroNameRow: { display: 'flex', alignItems: 'flex-end', gap: 24, flexWrap: 'wrap' },
+    heroName: { fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(96px, 12vw, 180px)', lineHeight: 0.82, letterSpacing: '-0.055em', margin: 0, color: 'var(--ink)' },
+    heroRaiBadge: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'var(--lime)', color: '#000', fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(96px, 12vw, 180px)', lineHeight: 0.82, letterSpacing: '-0.055em', padding: '0 16px', borderRadius: 14 },
+    heroRoleLine: { display: 'flex', alignItems: 'baseline', gap: 16, marginTop: 20, fontFamily: 'Space Grotesk', fontWeight: 500 },
+    heroRoleLabel: { fontFamily:'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)' },
+    heroRoleText: { fontFamily: 'Space Grotesk', fontSize: 40, fontWeight: 500, letterSpacing: '-0.02em', color: 'var(--ink)' },
+    heroTag: { fontSize: 19, lineHeight: 1.5, maxWidth: 640, color: 'var(--ink-soft)', marginTop: 28 },
+    heroTagHL: { color: 'var(--ink)', borderBottom: '2px solid var(--lime)', paddingBottom: 1 },
+    heroCTAs: { display: 'flex', gap: 12, marginTop: 28, flexWrap: 'wrap' },
+    ctaPrimary: { background: 'var(--lime)', color: '#000', padding: '12px 20px', borderRadius: 999, textDecoration: 'none', fontFamily: 'JetBrains Mono, monospace', fontSize: 13, fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: 8 },
+    ctaGhost: { background: 'transparent', color: 'var(--ink)', padding: '12px 20px', borderRadius: 999, textDecoration: 'none', fontFamily: 'JetBrains Mono, monospace', fontSize: 13, fontWeight: 500, border: '1px solid var(--line)', display: 'inline-flex', alignItems: 'center', gap: 8 },
+    statusCard: { background: 'var(--bg-2)', border: '1px solid var(--line)', borderRadius: 16, padding: '20px 22px', fontFamily:'JetBrains Mono, monospace', fontSize: 12, alignSelf: 'start', display: 'flex', flexDirection: 'column', gap: 14 },
+    statusHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 10, borderBottom: '1px solid var(--line)' },
+    statusTitle: { color: 'var(--ink)', fontWeight: 500 },
+    statusLive: { color: 'var(--lime)', display: 'inline-flex', alignItems: 'center', gap: 6 },
+    statusRow: { display:'flex', justifyContent:'space-between', gap: 12, padding: '3px 0', color: 'var(--ink-soft)' },
+    statusVal: { color: 'var(--ink)', textAlign: 'right' },
+    statusStats: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, paddingTop: 12, borderTop: '1px solid var(--line)' },
+    statBox: { background: 'oklch(0.14 0.01 260)', borderRadius: 8, padding: '10px 12px' },
+    statN: { fontFamily:'Space Grotesk', fontSize: 22, fontWeight: 700, color: 'var(--lime)', lineHeight: 1 },
+    statLabel: { fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginTop: 6 },
+    sectionHead: { display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', padding: '20px 0', borderBottom: '1px solid var(--line)', marginBottom: 32 },
+    sTag: { fontFamily:'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--lime)', background: 'oklch(0.22 0.08 130 / 0.25)', padding: '4px 10px', borderRadius: 4 },
+    sTitle: { fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(44px, 6vw, 80px)', lineHeight: 0.95, letterSpacing: '-0.035em', margin: '12px 0 0' },
+    sCount: { fontFamily:'JetBrains Mono, monospace', fontSize: 12, color:'var(--ink-soft)' },
+    section: { padding: '72px 0 20px' },
+    projectList: { display: 'grid', gap: 20 },
+    projectCard: { border: '1px solid var(--line)', borderRadius: 18, overflow: 'hidden', background: 'var(--bg-2)', transition: 'border-color .2s, transform .2s' },
+    projectCardOpen: { borderColor: 'var(--lime)' },
+    projectHead: { display: 'grid', gridTemplateColumns: '90px 1fr auto 44px', gap: 24, alignItems: 'center', padding: '28px 28px', cursor: 'pointer' },
+    projectN: { fontFamily:'JetBrains Mono, monospace', fontSize: 13, color: 'var(--ink-soft)' },
+    projectTitle: { fontFamily:'Space Grotesk', fontWeight: 700, fontSize: 'clamp(34px, 4vw, 56px)', lineHeight: 1, letterSpacing: '-0.03em' },
+    projectKicker: { fontFamily:'JetBrains Mono, monospace', fontSize: 13, color:'var(--ink-soft)', marginTop: 8 },
+    projectTags: { display:'flex', gap: 6, flexWrap:'wrap', justifyContent:'flex-end', maxWidth: 320 },
+    tag: { fontFamily:'JetBrains Mono, monospace', fontSize: 11, padding: '4px 10px', border: '1px solid var(--line)', borderRadius: 4, color:'var(--ink-soft)' },
+    tagHL: { fontFamily:'JetBrains Mono, monospace', fontSize: 11, padding: '4px 10px', background: 'var(--lime)', color: '#000', borderRadius: 4, fontWeight: 500 },
+    plus: { width: 40, height: 40, borderRadius: '50%', border: '1px solid var(--line)', display:'grid', placeItems:'center', fontFamily:'JetBrains Mono, monospace', fontSize: 20, transition: 'all .25s' },
+    projectBody: { display:'grid', gridTemplateColumns:'1.1fr 1fr', gap: 32, padding: '0 28px 36px' },
+    projectBlurb: { fontFamily:'Space Grotesk', fontSize: 28, lineHeight: 1.22, letterSpacing: '-0.015em', marginBottom: 20, color: 'var(--ink)' },
+    projectLong: { fontSize: 15.5, lineHeight: 1.7, color: 'var(--ink-soft)', marginBottom: 24 },
+    winList: { listStyle:'none', padding: 0, margin: 0 },
+    winItem: { display:'flex', gap: 12, padding: '12px 0', borderTop: '1px solid var(--line)', fontSize: 15, lineHeight: 1.45 },
+    winArrow: { color: 'var(--lime)', fontFamily:'JetBrains Mono, monospace' },
+    projectRight: { background: 'oklch(0.14 0.01 260)', borderRadius: 14, padding: 18, display: 'flex', flexDirection: 'column', gap: 14 },
+    projectLinks: { display: 'flex', flexDirection: 'column', gap: 8, fontFamily: 'JetBrains Mono, monospace', fontSize: 12.5 },
+    linkChip: { padding: '8px 12px', borderRadius: 8, background: 'var(--bg-2)', color: 'var(--lime)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid var(--line)' },
+    principlesWrap: { background: 'var(--magenta)', color: '#000', borderRadius: 22, padding: '40px 44px', position: 'relative', overflow: 'hidden', minHeight: 260, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' },
+    princHead: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase' },
+    princN: { fontWeight: 500 },
+    princTitle: { fontFamily: 'Space Grotesk', fontSize: 'clamp(36px, 4.5vw, 60px)', fontWeight: 700, lineHeight: 1.02, letterSpacing: '-0.03em', margin: '28px 0 16px', maxWidth: 900 },
+    princBody: { fontFamily: 'Space Grotesk', fontSize: 18, lineHeight: 1.45, maxWidth: 780, margin: 0 },
+    princControls: { display: 'flex', alignItems: 'center', gap: 8, marginTop: 32 },
+    princDot: (active) => ({ width: active ? 36 : 10, height: 10, borderRadius: 999, background: active ? '#000' : 'rgba(0,0,0,0.25)', transition: 'all .25s', cursor: 'pointer', border: 'none', padding: 0 }),
+    princArrow: { width: 40, height: 40, borderRadius: '50%', border: '1px solid #000', background: 'transparent', color: '#000', cursor: 'pointer', display: 'grid', placeItems: 'center', fontFamily: 'JetBrains Mono, monospace', fontSize: 18, marginLeft: 'auto' },
+    nowGrid: { display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap: 16 },
+    nowCard: { padding: '22px 24px', borderRadius: 14, border: '1px solid var(--line)', background: 'var(--bg-2)', position: 'relative', overflow: 'hidden', minHeight: 120 },
+    nowCardAccent: (i) => { const colors = ['var(--lime)', 'var(--magenta)', 'var(--blue)']; return { position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: colors[i % 3] }; },
+    nowLabel: { fontFamily:'JetBrains Mono, monospace', fontSize: 10, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--ink-soft)', marginBottom: 10 },
+    nowValue: { fontFamily:'Space Grotesk', fontWeight: 600, fontSize: 19, lineHeight: 1.25, color: 'var(--ink)' },
+    expItem: { display:'grid', gridTemplateColumns:'1fr 2fr', gap: 32, padding: '40px 0', borderTop: '1px solid var(--line)' },
+    expWhen: { fontFamily:'JetBrains Mono, monospace', fontSize: 13, color:'var(--lime)' },
+    expOrgLine: { fontFamily:'Space Grotesk', fontSize: 34, fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 4 },
+    expRole: { fontFamily:'Space Grotesk', fontSize: 20, color:'var(--ink-soft)', marginBottom: 20, fontWeight: 500 },
+    expBullet: { fontSize: 15.5, lineHeight: 1.55, margin: '0 0 12px', paddingLeft: 20, position:'relative', color: 'var(--ink)' },
+    skillsBlock: { display:'grid', gridTemplateColumns:'repeat(5, 1fr)', gap: 2, background: 'var(--line)', border: '1px solid var(--line)', borderRadius: 14, overflow:'hidden' },
     skillCell: { background: 'var(--bg)', padding: '24px 22px' },
-    skillHead: { fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--magenta)', marginBottom: 16 },
-    skillItem: { fontFamily: 'Space Grotesk', fontSize: 15, padding: '5px 0', color: 'var(--ink)', fontWeight: 500 },
-
-    archiveTable: { border: '1px solid var(--line)', borderRadius: 14, overflow: 'hidden' },
-    archiveHead: {
-      display: 'grid', gridTemplateColumns: '80px 1fr 2fr 160px', gap: 16,
-      padding: '12px 20px', background: 'var(--bg-2)',
-      fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.2em',
-      textTransform: 'uppercase', color: 'var(--ink-soft)',
-    },
-    archiveRow: {
-      display: 'grid', gridTemplateColumns: '80px 1fr 2fr 160px', gap: 16,
-      padding: '16px 20px', borderTop: '1px solid var(--line)', alignItems: 'baseline',
-    },
-    archiveYear: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--ink-soft)' },
-    archiveTitle: { fontFamily: 'Space Grotesk', fontSize: 20, fontWeight: 600, letterSpacing: '-0.01em' },
-    archiveNote: { fontSize: 14, color: 'var(--ink-soft)' },
-    archiveStack: { fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--lime)', textAlign: 'right' },
-
-    ossGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 },
-    ossCard: { padding: '24px', border: '1px solid var(--line)', borderRadius: 14, background: 'var(--bg-2)' },
-    ossRepo: { fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: 'var(--blue)', marginBottom: 14 },
-    ossWhat: { fontFamily: 'Space Grotesk', fontSize: 18, fontWeight: 500, lineHeight: 1.35, marginBottom: 18 },
-    ossStars: { fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: 'var(--ink-soft)' },
-
-    contactBlock: {
-      marginTop: 80, padding: '64px 48px', borderRadius: 24,
-      background: 'var(--lime)', color: '#000', position: 'relative', overflow: 'hidden',
-    },
-    contactBig: {
-      fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: 'clamp(80px, 12vw, 180px)',
-      lineHeight: 0.85, letterSpacing: '-0.055em', margin: 0,
-    },
-    contactLinks: { display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 40, fontFamily: 'JetBrains Mono, monospace', fontSize: 14 },
-    contactLink: {
-      background: '#000', color: 'var(--lime)', padding: '14px 20px',
-      borderRadius: 999, textDecoration: 'none', fontWeight: 500,
-      display: 'inline-flex', alignItems: 'center', gap: 8,
-    },
+    skillHead: { fontFamily:'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--magenta)', marginBottom: 16 },
+    skillItem: { fontFamily:'Space Grotesk', fontSize: 15, padding: '5px 0', color: 'var(--ink)', fontWeight: 500 },
+    contactBlock: { marginTop: 80, padding: '64px 48px', borderRadius: 24, background: 'var(--lime)', color: '#000', position:'relative', overflow:'hidden' },
+    contactBig: { fontFamily:'Space Grotesk', fontWeight: 700, fontSize: 'clamp(80px, 12vw, 180px)', lineHeight: 0.85, letterSpacing: '-0.055em', margin: 0 },
+    contactLinks: { display:'flex', gap: 14, flexWrap:'wrap', marginTop: 40, fontFamily:'JetBrains Mono, monospace', fontSize: 14 },
+    contactLink: { background: '#000', color: 'var(--lime)', padding: '14px 20px', borderRadius: 999, textDecoration: 'none', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: 8 },
   };
 
-  const nowAccentColors = ['var(--lime)', 'var(--magenta)', 'var(--blue)', 'var(--lime)'];
+  const curP = D.principles[principleIdx];
 
   return (
     <div style={{ minHeight: '100vh' }}>
       <div style={s.wrap}>
-
-        {/* TOPBAR */}
         <div style={s.topbar}>
-          <div style={s.logo}>anand_rai<span style={{ color: 'var(--lime)' }}>.</span></div>
+          <div style={s.logo}>anand_rai<span style={{color:'var(--lime)'}}>.</span></div>
           <div style={s.navLinks}>
             <a style={s.navLink} href="#work">work</a>
             <a style={s.navLink} href="#about">about</a>
             <a style={s.navLink} href="#contact">contact</a>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <span style={s.topDot} />PGH · {time} EST
-          </div>
+          <div style={{textAlign:'right'}}><span style={s.topDot} />PGH · {time} EST</div>
         </div>
 
-        {/* HERO */}
         <header style={s.hero}>
-          <div style={s.heroKicker}>
-            <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: 'var(--lime)' }} />
-            Portfolio / v2026 — open to software engineering roles
-          </div>
-          <h1 style={s.heroName}>ANAND</h1>
-          <h1 style={s.heroRole}>RAI/</h1>
-          <div style={s.heroSplit}>
-            <p style={s.heroTag}>
-              Software engineer. I build <span style={s.heroTagHL}>production systems</span>, APIs,
-              and practical AI-powered applications.
-            </p>
-            <div style={s.statusCard}>
-              <div style={s.statusRow}><span>loc</span><span style={s.statusVal}>Pittsburgh, PA</span></div>
-              <div style={s.statusRow}><span>edu</span><span style={s.statusVal}>MS CompE @ Pitt</span></div>
-              <div style={s.statusRow}><span>grad</span><span style={s.statusVal}>Spring 2027</span></div>
-              <div style={s.statusRow}><span>exp</span><span style={s.statusVal}>2+ yrs software engineering</span></div>
-              <div style={s.statusRow}><span>status</span><span style={{ ...s.statusVal, color: 'var(--lime)' }}>● open to opportunities</span></div>
+          <div style={s.heroLeft}>
+            <div style={s.heroKicker}><Dot size={10} color="var(--lime)" />Portfolio / v2026 — open to software engineering roles</div>
+            <div style={s.heroNameRow}>
+              <h1 style={s.heroName}>ANAND</h1>
+              <span style={s.heroRaiBadge}>RAI</span>
+            </div>
+            <div style={s.heroRoleLine}>
+              <span style={s.heroRoleLabel}>/ role →</span>
+              <span style={s.heroRoleText}>Software engineer, backend-leaning.</span>
+            </div>
+            <p style={s.heroTag}>I build <span style={s.heroTagHL}>production systems</span>, tested APIs, and practical <span style={s.heroTagHL}>AI-powered</span> applications. Previously at Amazon, DTN, and Public Consulting Group — currently finishing my MS at Pitt.</p>
+            <div style={s.heroCTAs}>
+              <a href="#work" style={s.ctaPrimary}>→ view work</a>
+              <a href={`mailto:${D.email}`} style={s.ctaGhost}>✉ get in touch</a>
+              <a href={D.resume} style={s.ctaGhost}>⤓ resume.pdf</a>
             </div>
           </div>
+
+          <aside style={s.statusCard}>
+            <div style={s.statusHeader}>
+              <span style={s.statusTitle}>// status.json</span>
+              <span style={s.statusLive}><span style={{display:'inline-block', width: 8, height: 8, borderRadius:'50%', background:'var(--lime)', boxShadow:'0 0 10px var(--lime)'}} />live</span>
+            </div>
+            <div>
+              <div style={s.statusRow}><span>location</span><span style={s.statusVal}>Pittsburgh, PA · EST</span></div>
+              <div style={s.statusRow}><span>education</span><span style={s.statusVal}>MS CompE @ Pitt</span></div>
+              <div style={s.statusRow}><span>graduating</span><span style={s.statusVal}>Spring 2027</span></div>
+              <div style={s.statusRow}><span>work auth</span><span style={s.statusVal}>US · open to remote</span></div>
+              <div style={s.statusRow}><span>last shipped</span><span style={s.statusVal}>Economy Dashboard</span></div>
+              <div style={s.statusRow}><span>next focus</span><span style={s.statusVal}>distributed backend</span></div>
+              <div style={s.statusRow}><span>status</span><span style={{...s.statusVal, color:'var(--lime)'}}>● interviewing</span></div>
+            </div>
+            <div style={s.statusStats}>
+              <div style={s.statBox}><div style={s.statN}>2+</div><div style={s.statLabel}>Yrs SWE</div></div>
+              <div style={s.statBox}><div style={s.statN}>3</div><div style={s.statLabel}>Internships</div></div>
+              <div style={s.statBox}><div style={s.statN}>50%</div><div style={s.statLabel}>Latency cut</div></div>
+              <div style={s.statBox}><div style={s.statN}>87%</div><div style={s.statLabel}>LLM acc.</div></div>
+            </div>
+          </aside>
         </header>
 
-        {/* ABOUT */}
-        <section style={s.section} id="about">
-          <div style={s.sectionHead}>
-            <div>
-              <span style={s.sTag}>01 / ABOUT</span>
-              <h2 style={s.sTitle}>Short version.</h2>
-            </div>
-            <div style={s.sCount}>~ 3 paragraphs</div>
-          </div>
-          <div style={s.aboutGrid}>
-            <div style={s.aboutText}>
-              {D.about.map((p, i) => <p key={i} style={s.aboutTextP}>{p}</p>)}
-            </div>
-            <div style={s.aboutSide}>
-              <div style={s.aboutSideLabel}>Principle #1</div>
-              <div style={s.aboutSideBig}>
-                Clean systems &gt; clever demos.
-              </div>
-              <div style={{ marginTop: 28, fontFamily: 'JetBrains Mono, monospace', fontSize: 12, lineHeight: 1.5 }}>
-                The feature only matters if someone can test it, extend it,
-                and understand it six months later.
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* NOW */}
-        <section style={s.section}>
-          <div style={s.sectionHead}>
-            <div>
-              <span style={s.sTag}>02 / NOW</span>
-              <h2 style={s.sTitle}>Current snapshot.</h2>
-            </div>
-            <div style={s.sCount}>April 2026</div>
-          </div>
-          <div style={s.nowStrip}>
-            {D.now.map((n, i) => (
-              <div key={i} style={s.nowCard}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: nowAccentColors[i % 4] }} />
-                <div style={s.nowLabel}>{n.label}</div>
-                <div style={s.nowValue}>{n.value}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* PROJECTS */}
         <section style={s.section} id="work">
           <div style={s.sectionHead}>
-            <div>
-              <span style={s.sTag}>03 / SELECTED WORK</span>
-              <h2 style={s.sTitle}>Things I've shipped.</h2>
-            </div>
-            <div style={s.sCount}>{D.projects.length} selected projects</div>
+            <div><span style={s.sTag}>01 / SELECTED WORK</span><h2 style={s.sTitle}>Things I've shipped.</h2></div>
+            <div style={s.sCount}>{D.projects.length} projects · click to expand</div>
           </div>
-          <div>
+
+          <div style={s.projectList}>
             {D.projects.map((p, i) => {
               const open = openProject === i;
               const hovered = hoverProj === i;
               return (
-                <div
-                  key={i}
-                  style={{ ...s.projectItem, background: hovered && !open ? 'var(--bg-2)' : 'transparent' }}
-                  onMouseEnter={() => setHoverProj(i)}
-                  onMouseLeave={() => setHoverProj(null)}
-                >
+                <div key={i} style={{...s.projectCard, ...(open ? s.projectCardOpen : {}), transform: hovered && !open ? 'translateY(-2px)' : 'none'}} onMouseEnter={() => setHoverProj(i)} onMouseLeave={() => setHoverProj(null)}>
                   <div style={s.projectHead} onClick={() => setOpenProject(open ? -1 : i)}>
                     <div style={s.projectN}>→ PRJ_{p.n}</div>
                     <div>
-                      <div style={{ ...s.projectTitle, color: hovered || open ? 'var(--lime)' : 'var(--ink)', transition: 'color .2s' }}>
-                        {p.title}
-                      </div>
+                      <div style={{...s.projectTitle, color: hovered || open ? 'var(--lime)' : 'var(--ink)', transition: 'color .2s'}}>{p.title}</div>
                       <div style={s.projectKicker}>// {p.kicker} · {p.year}</div>
                     </div>
                     <div style={s.projectTags}>
-                      {p.stack.slice(0, 3).map(t => <span key={t} style={s.tag}>{t}</span>)}
+                      {p.stack.slice(0, 4).map((st, j) => <span key={st} style={j === 0 ? s.tagHL : s.tag}>{st}</span>)}
                     </div>
-                    <div style={{ ...s.plus, background: open ? 'var(--lime)' : 'transparent', color: open ? '#000' : 'var(--ink)', transform: open ? 'rotate(45deg)' : 'rotate(0)' }}>+</div>
+                    <div style={{...s.plus, background: open ? 'var(--lime)' : 'transparent', color: open ? '#000' : 'var(--ink)', transform: open ? 'rotate(45deg)' : 'rotate(0)'}}>+</div>
                   </div>
+
                   {open && (
                     <div style={s.projectBody} className="reveal">
-                      <div style={s.projectBodyLeft}>
-                        <Placeholder label={`[ ${p.title.toLowerCase()} — screens ]`} ratio="4/3" tone="dark" />
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
-                          {p.stack.map(t => <span key={t} style={s.tag}>{t}</span>)}
-                        </div>
-                        <div style={{ marginTop: 16, fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--blue)', display: 'grid', gap: 6 }}>
-                          {p.live && <a href={`https://${p.live}`} style={{ color: 'var(--blue)', textDecoration: 'none' }}>↗ live: {p.live}</a>}
-                          {p.repo && <a href={`https://${p.repo}`} style={{ color: p.live ? 'var(--ink-soft)' : 'var(--blue)', textDecoration: 'none' }}>◆ repo: {p.repo}</a>}
-                        </div>
-                      </div>
                       <div>
                         <div style={s.projectBlurb}>{p.blurb}</div>
                         <div style={s.projectLong}>{p.long}</div>
-                        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 8 }}>
-                          WINS
-                        </div>
+                        <div style={{fontFamily:'JetBrains Mono, monospace', fontSize: 11, letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--ink-soft)', marginBottom: 4}}>WINS</div>
                         <ul style={s.winList}>
-                          {p.wins.map((w, j) => (
-                            <li key={j} style={s.winItem}>
-                              <span style={s.winArrow}>→</span>
-                              <span>{w}</span>
-                            </li>
-                          ))}
+                          {p.wins.map((w, j) => <li key={j} style={s.winItem}><span style={s.winArrow}>→</span><span>{w}</span></li>)}
                         </ul>
+                      </div>
+
+                      <div style={s.projectRight}>
+                        <Placeholder label={`[ ${p.title.toLowerCase()} — screenshot ]`} ratio="4/3" tone="dark" />
+                        <div>
+                          <div style={{fontFamily:'JetBrains Mono, monospace', fontSize: 10, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--ink-soft)', marginBottom: 8}}>Stack</div>
+                          <div style={{display:'flex', flexWrap:'wrap', gap: 6}}>{p.stack.map(st => <span key={st} style={s.tag}>{st}</span>)}</div>
+                        </div>
+                        <div>
+                          <div style={{fontFamily:'JetBrains Mono, monospace', fontSize: 10, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--ink-soft)', marginBottom: 8}}>Links</div>
+                          <div style={s.projectLinks}>
+                            {p.live && <a style={s.linkChip} href={`https://${p.live}`}>↗ live · {p.live}</a>}
+                            {p.repo && <a style={s.linkChip} href={`https://${p.repo}`}>◆ repo · {p.repo}</a>}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}
                 </div>
               );
             })}
-            <div style={{ borderTop: '1px solid var(--line)' }} />
           </div>
         </section>
 
-        {/* EXPERIENCE */}
+        <section style={s.section} id="about">
+          <div style={s.sectionHead}>
+            <div><span style={s.sTag}>02 / ABOUT</span><h2 style={s.sTitle}>Short version.</h2></div>
+            <div style={s.sCount}>background + principles</div>
+          </div>
+
+          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap: 48, marginBottom: 40}}>
+            <div style={{fontSize: 18, lineHeight: 1.6, color: 'var(--ink)'}}>
+              {D.about.map((p, i) => <p key={i} style={{margin: '0 0 18px'}}>{p}</p>)}
+            </div>
+            <div style={{fontSize: 15.5, lineHeight: 1.65, color: 'var(--ink-soft)'}}>
+              <div style={{fontFamily:'JetBrains Mono, monospace', fontSize: 11, letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--lime)', marginBottom: 16}}>How I work</div>
+              <p style={{margin: '0 0 14px'}}>Most comfortable in <b style={{color:'var(--ink)'}}>Python, TypeScript, and Java</b> — across React/Next frontends, FastAPI/Spring backends, and AWS infra (Lambda, API Gateway, DynamoDB).</p>
+              <p style={{margin: '0 0 14px'}}>Strongest when the work involves <b style={{color:'var(--ink)'}}>load testing, debugging, and tightening an existing codebase</b>. That's where I added the most value at DTN and Amazon.</p>
+              <p style={{margin: 0}}>Actively investing in <b style={{color:'var(--ink)'}}>distributed systems and backend depth</b> — my reading and side projects both lean that way right now.</p>
+            </div>
+          </div>
+
+          <div style={s.principlesWrap}>
+            <div style={s.princHead}>
+              <span style={s.princN}>Principles · {curP.n} of {String(D.principles.length).padStart(2, '0')}</span>
+              <span>auto · 5s</span>
+            </div>
+            <div>
+              <h3 key={`t-${principleIdx}`} style={s.princTitle} className="reveal">{curP.title}</h3>
+              <p key={`b-${principleIdx}`} style={s.princBody} className="reveal">{curP.body}</p>
+            </div>
+            <div style={s.princControls}>
+              {D.principles.map((_, i) => <button key={i} aria-label={`principle ${i+1}`} style={s.princDot(i === principleIdx)} onClick={() => setPrincipleIdx(i)} />)}
+              <button style={s.princArrow} onClick={() => setPrincipleIdx(i => (i - 1 + D.principles.length) % D.principles.length)} aria-label="previous">←</button>
+              <button style={{...s.princArrow, marginLeft: 8}} onClick={() => setPrincipleIdx(i => (i + 1) % D.principles.length)} aria-label="next">→</button>
+            </div>
+          </div>
+        </section>
+
         <section style={s.section}>
           <div style={s.sectionHead}>
-            <div>
-              <span style={s.sTag}>04 / EXPERIENCE</span>
-              <h2 style={s.sTitle}>Where I've worked.</h2>
-            </div>
-            <div style={s.sCount}>2+ years</div>
+            <div><span style={s.sTag}>03 / NOW</span><h2 style={s.sTitle}>Where I'm at.</h2></div>
+            <div style={s.sCount}>April 2026</div>
+          </div>
+          <div style={s.nowGrid}>
+            {D.now.map((n, i) => <div key={i} style={s.nowCard}><div style={s.nowCardAccent(i)} /><div style={s.nowLabel}>{n.label}</div><div style={s.nowValue}>{n.value}</div></div>)}
+          </div>
+        </section>
+
+        <section style={s.section}>
+          <div style={s.sectionHead}>
+            <div><span style={s.sTag}>04 / EXPERIENCE</span><h2 style={s.sTitle}>Where I've worked.</h2></div>
+            <div style={s.sCount}>2+ years · {D.experience.length} roles</div>
           </div>
           <div>
             {D.experience.map((e, i) => (
               <div key={i} style={s.expItem}>
-                <div>
-                  <div style={s.expWhen}>{e.when}</div>
-                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--ink-soft)', marginTop: 6 }}>{e.where}</div>
-                </div>
-                <div>
-                  <h3 style={s.expOrgLine}>{e.org}</h3>
-                  <div style={s.expRole}>{e.role}</div>
-                  {e.bullets.map((b, j) => (
-                    <p key={j} style={s.expBullet}>
-                      <span style={{ position: 'absolute', left: 0, color: 'var(--magenta)' }}>▸</span>{b}
-                    </p>
-                  ))}
-                </div>
+                <div><div style={s.expWhen}>{e.when}</div><div style={{fontFamily:'JetBrains Mono, monospace', fontSize: 12, color:'var(--ink-soft)', marginTop: 6}}>{e.where}</div></div>
+                <div><h3 style={s.expOrgLine}>{e.org}</h3><div style={s.expRole}>{e.role}</div>{e.bullets.map((b, j) => <p key={j} style={s.expBullet}><span style={{position:'absolute', left: 0, color:'var(--magenta)'}}>▸</span>{b}</p>)}</div>
               </div>
             ))}
-            <div style={{ borderTop: '1px solid var(--line)' }} />
+            <div style={{borderTop: '1px solid var(--line)'}} />
           </div>
         </section>
 
-        {/* SKILLS */}
         <section style={s.section}>
           <div style={s.sectionHead}>
-            <div>
-              <span style={s.sTag}>05 / STACK</span>
-              <h2 style={s.sTitle}>Tools I reach for.</h2>
-            </div>
+            <div><span style={s.sTag}>05 / STACK</span><h2 style={s.sTitle}>Tools I reach for.</h2></div>
             <div style={s.sCount}>daily drivers</div>
           </div>
           <div style={s.skillsBlock}>
@@ -571,23 +497,17 @@ function App() {
           </div>
         </section>
 
-        {/* CONTACT */}
         <section style={s.contactBlock} id="contact">
-          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 20 }}>
-            06 / CONTACT — say hi
-          </div>
-          <h2 style={s.contactBig}>let's<br />build something.</h2>
+          <div style={{fontFamily:'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.2em', textTransform:'uppercase', marginBottom: 20}}>06 / CONTACT — say hi</div>
+          <h2 style={s.contactBig}>let's<br/>build something.</h2>
           <div style={s.contactLinks}>
             <a href={`mailto:${D.email}`} style={s.contactLink}>✉ {D.email}</a>
             <a href={`https://${D.github}`} style={s.contactLink}>◆ {D.github}</a>
             <a href={`https://${D.linkedin}`} style={s.contactLink}>◆ {D.linkedin}</a>
-            <a href={D.resume} style={{ ...s.contactLink, background: '#fff', color: '#000' }}>⤓ resume.pdf</a>
+            <a href={D.resume} style={{...s.contactLink, background:'#fff', color:'#000'}}>⤓ resume.pdf</a>
           </div>
-          <div style={{ marginTop: 48, fontFamily: 'JetBrains Mono, monospace', fontSize: 11, opacity: 0.7 }}>
-            © 2026 Anand Rai · Set in Space Grotesk &amp; JetBrains Mono
-          </div>
+          <div style={{marginTop: 48, fontFamily:'JetBrains Mono, monospace', fontSize: 11, opacity: 0.7}}>© 2026 Anand Rai · Set in Space Grotesk & JetBrains Mono</div>
         </section>
-
       </div>
     </div>
   );
