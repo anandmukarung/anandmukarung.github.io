@@ -42,7 +42,7 @@ const { useState, useEffect } = React;
 const DATA = {
   name: "Anand Rai",
   role: "Software Engineer",
-  tagline: "MS Computer Engineering @ Pitt. Building production backend systems, APIs, and AI-powered applications.",
+  tagline: "MS Computer Engineering @ Pitt. Building production software, tested APIs, and AI-powered applications.",
   location: "Pittsburgh, PA",
   email: "anandmukarung@gmail.com",
   github: "github.com/anandmukarung",
@@ -50,25 +50,25 @@ const DATA = {
   resume: "Anand_Rai_Resume.pdf",
 
   now: [
-    { label: "Reading", value: "Designing ML Systems — Chip Huyen" },
-    { label: "Building", value: "A retrieval eval harness for a class project" },
-    { label: "Listening", value: "Latent Space podcast" },
-    { label: "Open to", value: "Summer '27 software engineering roles" },
+    { label: "Reading", value: "Designing Data-Intensive Applications" },
+    { label: "Building", value: "Production-ready dashboards and API-backed apps" },
+    { label: "Focus", value: "Clean systems, testing, and maintainable handoff" },
+    { label: "Open to", value: "Software engineering opportunities" },
   ],
 
   about: [
-    "I'm a Master's student in Computer Engineering at the University of Pittsburgh, with professional experience building production-grade backend systems, APIs, and full-stack applications in Python, TypeScript, and Java on AWS.",
-    "I have hands-on experience with machine learning, LLM integration, and AI-powered application development, focusing on the full software development lifecycle from design to deployment.",
-    "I'm a strong communicator and collaborative team member with a track record of delivering high-quality software, technical documentation, and working in Agile environments.",
+    "I'm a Master's student in Computer Engineering at the University of Pittsburgh with production experience building full-stack applications, reusable API components, and backend services in TypeScript, Python, and Java.",
+    "My work spans testing, debugging, documentation, and shipping software on AWS, with recent projects that add LLM workflows and data products without losing sight of maintainability.",
+    "I care about clean code, strong handoff, and building systems teams can actually extend, review, and trust in production.",
   ],
 
   skills: {
     "Languages":     ["Python", "TypeScript", "JavaScript", "Java", "SQL", "HTML/CSS", "Bash"],
     "Frameworks":    ["React", "Next.js", "FastAPI", "Spring Boot", "Node.js", "REST APIs"],
-    "AI & ML":       ["PyTorch", "scikit-learn", "OpenAI API", "LLM integration", "Prompt engineering", "Knowledge distillation"],
-    "Cloud & DevOps": ["AWS (Lambda, API Gateway, S3, DynamoDB, EKS)", "Docker", "Kubernetes", "GitHub Actions", "CI/CD", "Datadog"],
-    "Databases":     ["PostgreSQL", "DynamoDB", "SQLite"],
-    "Practices":     ["Agile/Scrum", "TDD", "Code review", "Technical documentation", "OOP", "SDLC"],
+    "AI & ML":       ["OpenAI API", "LLM integration", "Prompt engineering", "PyTorch", "scikit-learn", "Knowledge distillation"],
+    "Cloud & DevOps": ["AWS (Lambda, API Gateway, S3, DynamoDB)", "Docker", "GitHub Actions", "CI/CD", "Datadog", "Locust"],
+    "Databases":     ["PostgreSQL", "DynamoDB", "SQLite", "SQL"],
+    "Practices":     ["TDD", "Unit testing", "Integration testing", "Load testing", "Code review", "Technical documentation"],
   },
 
   experience: [
@@ -78,9 +78,9 @@ const DATA = {
       when: "Jan 2023 — Jul 2024",
       where: "Burnsville, MN (Remote)",
       bullets: [
-        "Designed, built, and maintained production backend APIs in Python and TypeScript on AWS (Lambda, API Gateway, S3) with Kubernetes (EKS); collaborated with cross-functional teams to deliver features in Agile sprints.",
-        "Designed and maintained PostgreSQL schemas; wrote and optimized complex SQL queries reducing API latency by 50%; maintained technical documentation for APIs and data services.",
-        "Deployed and monitored distributed services using Datadog; debugged and resolved production issues across the stack; contributed to CI/CD pipelines via GitHub Actions.",
+        "Built and maintained reusable API components and backend services in TypeScript and Python; documented behavior and usage clearly for internal teams.",
+        "Wrote and ran load tests with Locust, then debugged bottlenecks and regressions to reduce latency by 50% through systematic optimization.",
+        "Improved existing codebases for consistency and maintainability while collaborating across engineering and product teams in code review and documentation workflows.",
       ],
     },
     {
@@ -89,8 +89,8 @@ const DATA = {
       when: "Aug 2022 — Nov 2022",
       where: "Seattle, WA",
       bullets: [
-        "Collaborated with senior engineers to design and ship a production TypeScript API on AWS (Lambda, API Gateway, DynamoDB, AppSync, Elasticsearch) supporting a large-scale Prime platform.",
-        "Participated in architecture discussions and code reviews; wrote technical documentation and applied TDD throughout the project lifecycle.",
+        "Developed a production-ready TypeScript API on AWS using Lambda, API Gateway, and DynamoDB, with unit tests written in a TDD workflow.",
+        "Ramped quickly on a large codebase, contributed to architecture reviews, and shipped a complete tested feature within a 10-week internship.",
       ],
     },
     {
@@ -99,16 +99,17 @@ const DATA = {
       when: "Jun 2022 — Aug 2022",
       where: "Remote",
       bullets: [
-        "Designed and built a full-stack staff management application using Spring Boot (Java) and PostgreSQL; partnered with stakeholders to define requirements and delivered complete technical documentation.",
+        "Built a full-stack staff management application using Java Spring Boot and PostgreSQL, then partnered with QA to validate features before release.",
+        "Documented system behavior and technical processes to support smoother handoff and long-term maintainability.",
       ],
     },
     {
-      role: "Data Quality Associate",
-      org: "California Energy Commission",
-      when: "Oct 2019 — Jun 2021",
+      role: "Graduate Student Assistant",
+      org: "CSU Sacramento",
+      when: "Jan 2022 — Jun 2022",
       where: "Sacramento, CA",
       bullets: [
-        "Built Python data pipelines to automate preprocessing and validation, improving productivity by 50%; documented workflows and communicated findings to technical and non-technical stakeholders.",
+        "Evaluated 40+ student programming submissions against consistent criteria and provided structured, actionable feedback on code quality and design.",
       ],
     },
   ],
@@ -117,20 +118,36 @@ const DATA = {
     {
       n: "01",
       title: "Job Application Tracker",
-      kicker: "Full-stack app with LLM integration",
-      year: "2024",
-      stack: ["Python", "FastAPI", "Next.js", "React", "PostgreSQL", "OpenAI API"],
-      blurb: "A full-stack application for tracking job applications with an LLM-based classification pipeline.",
-      long: "Independently designed and built a complete application with a FastAPI backend, PostgreSQL database, and React frontend. Integrated an LLM-based classification pipeline using the OpenAI API, improving accuracy from 71% to 87% through iterative prompt engineering and evaluation. Includes unit and integration tests, deployed via GitHub Actions CI/CD.",
+      kicker: "Full-stack app with LLM-assisted workflow",
+      year: "2024 — Present",
+      stack: ["Next.js", "React", "FastAPI", "PostgreSQL", "OpenAI API"],
+      blurb: "A full-stack application for tracking job applications with a tested, component-based frontend and an LLM-assisted backend workflow.",
+      long: "Built a full-stack web application with a reusable React frontend, FastAPI backend, and PostgreSQL database. Iterated on an LLM-based classification pipeline over a labeled email dataset, improving accuracy from 71% to 87%, and shipped the project with automated tests plus GitHub Actions CI/CD.",
       wins: [
-        "Full-stack application with modern tech stack",
-        "LLM accuracy improved from 71% to 87%",
-        "Complete with tests and CI/CD deployment",
+        "Reusable component-based frontend and API backend",
+        "LLM classification accuracy improved from 71% to 87%",
+        "Automated tests and CI/CD deployment in place",
       ],
-      link: "github.com/anandmukarung/job-application-tracker",
+      repo: "github.com/anandmukarung/job-application-tracker",
     },
     {
       n: "02",
+      title: "Economy Dashboard",
+      kicker: "Live macro releases dashboard",
+      year: "2025",
+      stack: ["Next.js", "React", "Vercel", "Data visualization"],
+      blurb: "A live dashboard for the releases that move the macro narrative: labor, inflation, activity, growth, and recession risk.",
+      long: "Built and deployed a live macro dashboard that organizes the economic releases most relevant to the market narrative into one readable product. The project pairs a clean front end with fast iteration and public hosting on Vercel, making it easy to scan labor, inflation, growth, activity, and recession-risk signals in one place.",
+      wins: [
+        "Live production deployment on Vercel",
+        "Clear macro-focused information architecture",
+        "Public repo and live product for ongoing iteration",
+      ],
+      live: "economy-dashboard-lake.vercel.app",
+      repo: "github.com/anandmukarung/Economy-Dashboard",
+    },
+    {
+      n: "03",
       title: "Efficient Distillation of Compact ECG Classifiers",
       kicker: "Knowledge distillation for ECG models",
       year: "2024",
@@ -142,40 +159,23 @@ const DATA = {
         "Comprehensive benchmarking across metrics",
         "Focus on model efficiency",
       ],
-      link: "github.com/anandmukarung/ecg-distillation",
+      repo: "github.com/anandmukarung/ecg-distillation",
     },
     {
-      n: "03",
-      title: "Sports Match Outcome Prediction",
-      kicker: "ML pipeline for sports prediction",
-      year: "2023",
-      stack: ["Python", "scikit-learn"],
-      blurb: "End-to-end ML classification pipeline for predicting sports match outcomes.",
-      long: "Built a complete ML pipeline on real sports data, including feature engineering, model comparison (Logistic Regression, LDA, SVM), temporal cross-validation, and documented analysis of results.",
+      n: "04",
+      title: "Neuromorphic Vision-Driven Gait Switching",
+      kicker: "Real-time vision classification pipeline",
+      year: "2024",
+      stack: ["Python", "SpikingJelly", "Computer Vision"],
+      blurb: "A real-time terrain classification pipeline that triggers robot behavior from live scene understanding.",
+      long: "Collected and labeled a terrain dataset from webcam recordings, then built and tested an SNN-based automation pipeline that classifies scenes and triggers robot gait behavior in real time. The work focused on data collection, integration testing, and debugging classification failures end-to-end.",
       wins: [
-        "End-to-end ML pipeline",
-        "Multiple model comparison",
-        "Temporal cross-validation",
+        "Real-time classification pipeline",
+        "Dataset collection and debugging owned end-to-end",
+        "Integrated model output into downstream automation behavior",
       ],
-      link: "github.com/anandmukarung/sports-prediction",
+      repo: "github.com/anandmukarung",
     },
-  ],
-
-  archive: [
-    { year: "2025", title: "pg-snapshot", note: "Tiny CLI for diffing Postgres schemas across envs.", stack: "Go" },
-    { year: "2024", title: "warehouse-lint", note: "Opinionated linter for dbt models — catches silent joins.", stack: "Python" },
-    { year: "2024", title: "slack-digest", note: "Summarizes noisy Slack channels into a daily email.", stack: "Python, Claude" },
-    { year: "2023", title: "A/B calculator", note: "Bayesian A/B calculator our PM team still uses.", stack: "Streamlit" },
-    { year: "2023", title: "crew-scheduler", note: "LP solver for crew deployment; 12% fewer overtime hours.", stack: "Python, OR-Tools" },
-    { year: "2022", title: "ETL smoke kit", note: "Pre-deploy smoke tests for Airflow DAGs.", stack: "Python" },
-    { year: "2021", title: "leetcode-log", note: "Personal spaced-repetition tracker for LC problems.", stack: "TS, SQLite" },
-    { year: "2021", title: "plate-reader", note: "License-plate OCR hack for campus parking data.", stack: "OpenCV" },
-  ],
-
-  oss: [
-    { repo: "huggingface/transformers", what: "Docs fix for Trainer + custom collators", stars: "130k" },
-    { repo: "apache/airflow", what: "Small bug in TriggerDagRunOperator logging", stars: "36k" },
-    { repo: "dbt-labs/dbt-core", what: "Typo + example for incremental_strategy", stars: "9k" },
   ],
 };
 
@@ -376,7 +376,6 @@ function App() {
           <div style={s.navLinks}>
             <a style={s.navLink} href="#work">work</a>
             <a style={s.navLink} href="#about">about</a>
-            <a style={s.navLink} href="#archive">archive</a>
             <a style={s.navLink} href="#contact">contact</a>
           </div>
           <div style={{ textAlign: 'right' }}>
@@ -388,20 +387,20 @@ function App() {
         <header style={s.hero}>
           <div style={s.heroKicker}>
             <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: 'var(--lime)' }} />
-            Portfolio / v2026 — open to Summer '27
+            Portfolio / v2026 — open to software engineering roles
           </div>
           <h1 style={s.heroName}>ANAND</h1>
           <h1 style={s.heroRole}>RAI/</h1>
           <div style={s.heroSplit}>
             <p style={s.heroTag}>
               Software engineer. I build <span style={s.heroTagHL}>production systems</span>, APIs,
-              and AI-powered applications.
+              and practical AI-powered applications.
             </p>
             <div style={s.statusCard}>
               <div style={s.statusRow}><span>loc</span><span style={s.statusVal}>Pittsburgh, PA</span></div>
               <div style={s.statusRow}><span>edu</span><span style={s.statusVal}>MS CompE @ Pitt</span></div>
               <div style={s.statusRow}><span>grad</span><span style={s.statusVal}>Spring 2027</span></div>
-              <div style={s.statusRow}><span>exp</span><span style={s.statusVal}>4+ yrs software engineering</span></div>
+              <div style={s.statusRow}><span>exp</span><span style={s.statusVal}>2+ yrs software engineering</span></div>
               <div style={s.statusRow}><span>status</span><span style={{ ...s.statusVal, color: 'var(--lime)' }}>● open to opportunities</span></div>
             </div>
           </div>
@@ -423,11 +422,11 @@ function App() {
             <div style={s.aboutSide}>
               <div style={s.aboutSideLabel}>Principle #1</div>
               <div style={s.aboutSideBig}>
-                Boring pipelines &gt; clever notebooks.
+                Clean systems &gt; clever demos.
               </div>
               <div style={{ marginTop: 28, fontFamily: 'JetBrains Mono, monospace', fontSize: 12, lineHeight: 1.5 }}>
-                The model is 10% of the job. The other 90% is data quality,
-                monitoring, and making sure someone can fix it at 2am.
+                The feature only matters if someone can test it, extend it,
+                and understand it six months later.
               </div>
             </div>
           </div>
@@ -438,9 +437,9 @@ function App() {
           <div style={s.sectionHead}>
             <div>
               <span style={s.sTag}>02 / NOW</span>
-              <h2 style={s.sTitle}>As of April 2026.</h2>
+              <h2 style={s.sTitle}>Current snapshot.</h2>
             </div>
-            <div style={s.sCount}>updated weekly</div>
+            <div style={s.sCount}>April 2026</div>
           </div>
           <div style={s.nowStrip}>
             {D.now.map((n, i) => (
@@ -460,7 +459,7 @@ function App() {
               <span style={s.sTag}>03 / SELECTED WORK</span>
               <h2 style={s.sTitle}>Things I've shipped.</h2>
             </div>
-            <div style={s.sCount}>4 / 12 shown</div>
+            <div style={s.sCount}>{D.projects.length} selected projects</div>
           </div>
           <div>
             {D.projects.map((p, i) => {
@@ -493,8 +492,9 @@ function App() {
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
                           {p.stack.map(t => <span key={t} style={s.tag}>{t}</span>)}
                         </div>
-                        <div style={{ marginTop: 16, fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--blue)' }}>
-                          ↗ {p.link}
+                        <div style={{ marginTop: 16, fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'var(--blue)', display: 'grid', gap: 6 }}>
+                          {p.live && <a href={`https://${p.live}`} style={{ color: 'var(--blue)', textDecoration: 'none' }}>↗ live: {p.live}</a>}
+                          {p.repo && <a href={`https://${p.repo}`} style={{ color: p.live ? 'var(--ink-soft)' : 'var(--blue)', textDecoration: 'none' }}>◆ repo: {p.repo}</a>}
                         </div>
                       </div>
                       <div>
@@ -528,7 +528,7 @@ function App() {
               <span style={s.sTag}>04 / EXPERIENCE</span>
               <h2 style={s.sTitle}>Where I've worked.</h2>
             </div>
-            <div style={s.sCount}>3.5 years</div>
+            <div style={s.sCount}>2+ years</div>
           </div>
           <div>
             {D.experience.map((e, i) => (
@@ -571,54 +571,10 @@ function App() {
           </div>
         </section>
 
-        {/* ARCHIVE */}
-        <section style={s.section} id="archive">
-          <div style={s.sectionHead}>
-            <div>
-              <span style={s.sTag}>06 / ARCHIVE</span>
-              <h2 style={s.sTitle}>Smaller things.</h2>
-            </div>
-            <div style={s.sCount}>{D.archive.length} items</div>
-          </div>
-          <div style={s.archiveTable}>
-            <div style={s.archiveHead}>
-              <div>Year</div><div>Project</div><div>Note</div><div style={{ textAlign: 'right' }}>Stack</div>
-            </div>
-            {D.archive.map((a, i) => (
-              <div key={i} style={s.archiveRow}>
-                <div style={s.archiveYear}>{a.year}</div>
-                <div style={s.archiveTitle}>{a.title}</div>
-                <div style={s.archiveNote}>{a.note}</div>
-                <div style={s.archiveStack}>{a.stack}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* OSS */}
-        <section style={s.section}>
-          <div style={s.sectionHead}>
-            <div>
-              <span style={s.sTag}>07 / OPEN SOURCE</span>
-              <h2 style={s.sTitle}>Small PRs, big repos.</h2>
-            </div>
-            <div style={s.sCount}>{D.oss.length} merged</div>
-          </div>
-          <div style={s.ossGrid}>
-            {D.oss.map((o, i) => (
-              <div key={i} style={s.ossCard}>
-                <div style={s.ossRepo}>{o.repo}</div>
-                <div style={s.ossWhat}>{o.what}</div>
-                <div style={s.ossStars}>★ {o.stars} · merged</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* CONTACT */}
         <section style={s.contactBlock} id="contact">
           <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 20 }}>
-            08 / CONTACT — say hi
+            06 / CONTACT — say hi
           </div>
           <h2 style={s.contactBig}>let's<br />build something.</h2>
           <div style={s.contactLinks}>
